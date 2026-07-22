@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" data-spa-id="00" data-section-ids="sec-hook,sec-path,sec-tools,sec-how,sec-progress">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSC210 — Week 1 Orientation: What Is a Byte?</title>
+  <link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+
+  <!-- ==================== Header ==================== -->
+  <header class="sp-header">
+    <div class="sp-header__title">CSC210 — Computer Organization & Architecture</div>
+    <nav class="sp-header__breadcrumb" aria-label="Breadcrumb">
+      <a href="../../syllabus/CSC210-Syllabus-Fall2026.md">Syllabus</a> &rsaquo;
+      <a href="#">Week 1</a> &rsaquo;
+      <span>Orientation</span>
+    </nav>
+  </header>
+
+  <!-- ==================== Shell ==================== -->
+  <div class="sp-shell">
+
+    <!-- ---------- Sidebar ---------- -->
+    <aside class="sp-sidebar">
+      <div class="sp-sidebar__title">Week 1 SPAs</div>
+      <ul class="sp-sidebar__nav">
+        <li><a href="00-orientation.html" data-spa="00">Orientation</a></li>
+        <li><a href="01-why-binary.html" data-spa="01">Why Binary?</a></li>
+        <li><a href="02-base-conversion.html" data-spa="02">Converting Between Bases</a></li>
+        <li><a href="03-signed-integers.html" data-spa="03">Signed Integers & Two's Complement</a></li>
+        <li><a href="04-beyond-integers.html" data-spa="04">Beyond Integers</a></li>
+        <li><hr class="sp-sidebar__divider"></li>
+        <li><a href="../../syllabus/CSC210-Syllabus-Fall2026.md">Full Syllabus</a></li>
+      </ul>
+
+      <div class="sp-sidebar__title" style="margin-top:1.5rem;">On This Page</div>
+      <ul class="sp-sidebar__nav sp-sidebar__sections">
+        <!-- Section links injected by nav.js -->
+      </ul>
+    </aside>
+
+    <!-- ---------- Main Content ---------- -->
+    <main class="sp-main">
+
+      <h1>Week 1 Orientation</h1>
+      <p><strong>Estimated time:</strong> ~15 minutes &nbsp;|&nbsp; <strong>Prerequisites:</strong> None</p>
+
+      <!-- ============================================================
+           Section A — "The Gap" (Hook)
+           ============================================================ -->
+      <section id="sec-hook">
+        <h2>The Gap Between Voltage and This Webpage</h2>
+
+        <p>Every program you have ever written exists inside your computer as nothing more than <strong>patterns of electrical voltage</strong>. A wire either has voltage on it, or it doesn't. Two states. That is the entire physical vocabulary of a digital computer.</p>
+
+        <p>Yet the computer you are sitting at right now can display this sentence in color, play video, run a web browser with dozens of tabs, and compile code you write in Python, Java, or C. How is that possible when the underlying hardware only understands <strong>ON</strong> and <strong>OFF</strong>?</p>
+
+        <div class="callout callout--hook">
+          <div class="callout__title">The Gap</div>
+          <p><strong>What you know:</strong> You can count, add, and represent any number using the ten digits (0&ndash;9) you've used since childhood. You know what a "byte" is, at least vaguely, and you've seen "hex" in color codes or memory addresses.</p>
+          <p><strong>What you can't do yet:</strong> Explain how a machine that only understands "voltage present" or "voltage absent"&mdash;two states&mdash;can represent the number 2,731, the letter <code>'M'</code>, or the color blue.</p>
+          <p><strong>What you will be able to do by the end of this week:</strong> Take any integer, character, or simple data value and show exactly how it is stored as a sequence of 0s and 1s in computer memory. More importantly, you will understand that the <em>same</em> sequence of bits can mean completely different things depending on how the computer interprets them&mdash;which is the single most important idea in this entire course.</p>
+        </div>
+
+        <!-- Visual: The Gap graphic (pure CSS/HTML) -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:1rem;padding:2rem 0;flex-wrap:wrap;">
+          <div style="text-align:center;padding:1.5rem 2rem;background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius);box-shadow:var(--shadow);">
+            <div style="font-size:2rem;margin-bottom:.5rem;">⚡</div>
+            <div style="font-weight:700;font-size:var(--fs-md);">Voltage On / Off</div>
+            <div style="font-size:var(--fs-sm);color:var(--color-text-muted);">Two physical states</div>
+          </div>
+          <div style="font-size:2rem;color:var(--color-accent);">⟶</div>
+          <div style="text-align:center;padding:1.5rem 2rem;background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius);box-shadow:var(--shadow);">
+            <div style="font-family:var(--font-mono);font-size:var(--fs-lg);margin-bottom:.5rem;color:var(--color-primary);">01000010</div>
+            <div style="font-size:var(--fs-sm);color:var(--color-text-muted);">Patterns of bits</div>
+          </div>
+          <div style="font-size:2rem;color:var(--color-accent);">⟶</div>
+          <div style="text-align:center;padding:1.5rem 2rem;background:var(--color-surface);border:2px solid var(--color-border);border-radius:var(--radius);box-shadow:var(--shadow);">
+            <div style="font-size:2rem;margin-bottom:.5rem;">🌐</div>
+            <div style="font-weight:700;font-size:var(--fs-md);">This Webpage</div>
+            <div style="font-size:var(--fs-sm);color:var(--color-text-muted);">Everything you see</div>
+          </div>
+        </div>
+
+        <div class="callout callout--aha">
+          <div class="callout__title">Preview: Your "Aha" Moment</div>
+          <p>By the end of this week, you will see that <code>01000010</code> could mean the number <strong>66</strong>, the letter <strong>'B'</strong>, or something else entirely. The bits don't carry meaning. The <em>context</em> does.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Section B — "This Week's Learning Path" (Navigation Map)
+           ============================================================ -->
+      <section id="sec-path">
+        <h2>This Week's Learning Path</h2>
+
+        <p>Week 1 content is delivered through <strong>4 content SPAs</strong> that build on each other in sequence. Complete them in order. SPA 3 and SPA 4 can be started in any order after SPA 2, but SPA 3 is recommended before reaching the synthesis section of SPA 4.</p>
+
+        <!-- SPA 1 -->
+        <div class="spa-card-grid" style="grid-template-columns:1fr;max-width:480px;">
+          <div class="spa-card">
+            <span class="spa-card__number">SPA 1</span>
+            <div class="spa-card__title">Why Binary?</div>
+            <div class="spa-card__time">~2.5 hours &nbsp;|&nbsp; Sections 1.1&ndash;1.3</div>
+            <div class="spa-card__desc">Physical constraint → vocabulary (bit, byte, word) → number systems (binary, hex, octal). The foundation everything else builds on.</div>
+            <a class="spa-card__btn" href="01-why-binary.html">Start SPA 1 →</a>
+          </div>
+        </div>
+
+        <div class="dep-arrow">↓</div>
+
+        <!-- SPA 2 -->
+        <div class="spa-card-grid" style="grid-template-columns:1fr;max-width:480px;">
+          <div class="spa-card">
+            <span class="spa-card__number">SPA 2</span>
+            <div class="spa-card__title">Converting Between Bases</div>
+            <div class="spa-card__time">~1.5 hours &nbsp;|&nbsp; Sections 1.4&ndash;1.5</div>
+            <div class="spa-card__desc">Mechanical skill-building for base conversion (repeated division, power-sum, grouping). Introduces unsigned integer representation and overflow.</div>
+            <a class="spa-card__btn" href="02-base-conversion.html">Start SPA 2 →</a>
+          </div>
+        </div>
+
+        <div class="dep-arrow">↓</div>
+
+        <!-- SPA 3 and SPA 4 — parallel -->
+        <div class="spa-card-grid">
+          <div class="spa-card">
+            <span class="spa-card__number">SPA 3</span>
+            <div class="spa-card__title">Signed Integers & Two's Complement</div>
+            <div class="spa-card__time">~2.0 hours &nbsp;|&nbsp; Sections 1.6&ndash;1.7</div>
+            <div class="spa-card__desc">Three signed integer representations (sign-magnitude, one's complement, two's complement) and why two's complement is the universal choice. <em>Recommended before SPA 4's synthesis section.</em></div>
+            <a class="spa-card__btn" href="03-signed-integers.html">Start SPA 3 →</a>
+          </div>
+          <div class="spa-card">
+            <span class="spa-card__number">SPA 4</span>
+            <div class="spa-card__title">Beyond Integers</div>
+            <div class="spa-card__time">~2.5 hours &nbsp;|&nbsp; Sections 1.8&ndash;1.11</div>
+            <div class="spa-card__desc">Floating-point, character encoding, memory layout, and the synthesis section that ties everything together. Contains the core "Aha" widget (Byte Explorer).</div>
+            <a class="spa-card__btn" href="04-beyond-integers.html">Start SPA 4 →</a>
+          </div>
+        </div>
+
+        <div class="callout callout--forward" style="margin-top:1.5rem;">
+          <div class="callout__title">Note on SPA 3 / SPA 4 Order</div>
+          <p>SPA 4 branches from SPA 2 (floating-point depends on unsigned integers; character encoding depends on hex). However, the <strong>synthesis section</strong> (1.11) at the end of SPA 4 requires all prior concepts including two's complement from SPA 3. If you start SPA 4 first, complete SPA 3 before reaching the synthesis section.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Section C — "Tools You'll Use in This Course" (Preview)
+           ============================================================ -->
+      <section id="sec-tools">
+        <h2>Tools You'll Use in This Course</h2>
+
+        <p>Throughout this course you will use two primary tools to build and simulate digital circuits and assembly programs. <strong>No installation is needed this week</strong>&mdash;you will encounter these tools starting in Weeks 2 and 5 respectively.</p>
+
+        <!-- Logisim -->
+        <div class="tool-card">
+          <div class="tool-card__icon">🔌</div>
+          <div>
+            <div class="tool-card__name">Logisim Classic 2.7.1</div>
+            <div class="tool-card__desc">Starting Week 2, you will build digital circuits from primitive logic gates (AND, OR, NOT, NAND, etc.). By the end of the course, you will have constructed a complete CPU simulation&mdash;all within a single <code>.circ</code> file. Hosted for download on the course page.</div>
+          </div>
+        </div>
+
+        <!-- MARS -->
+        <div class="tool-card">
+          <div class="tool-card__icon">📟</div>
+          <div>
+            <div class="tool-card__name">MARS Simulator</div>
+            <div class="tool-card__desc">Starting Week 5, you will write MIPS assembly programs that run on a simulated processor. MARS provides an assembler, debugger, and memory viewer so you can see exactly how your code maps to machine-level operations.</div>
+          </div>
+        </div>
+
+        <!-- Saylor CS301 -->
+        <div class="tool-card">
+          <div class="tool-card__icon">📖</div>
+          <div>
+            <div class="tool-card__name">Saylor Academy — CS301: Computer Architecture</div>
+            <div class="tool-card__desc">Your primary reference textbook throughout the course. Free, openly licensed (CC BY 3.0), and organized into nine units that map to our four-phase progression. When SPAs reference outside reading, you will log in and navigate to specific units as directed. <a href="https://learn.saylor.org/mod/page/view.php?id=20643" target="_blank" rel="noopener">Open Saylor CS301 →</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Section D — "How This Course Works" (Orientation)
+           ============================================================ -->
+      <section id="sec-how">
+        <h2>How This Course Works</h2>
+
+        <h3>Accessing Course Materials</h3>
+        <p>All primary learning content is delivered through <strong>Single-Page Applications (SPAs)</strong> like this one. Each SPA contains prose, interactive widgets, and explicit references to the Saylor CS301 textbook. Navigate through SPAs in the order presented on the sidebar.</p>
+
+        <h3>Submitting Assignments</h3>
+        <p>Assignments include Logisim circuit checkpoints, MIPS programming exercises, and research papers. Submission instructions and deadlines are listed in the <a href="../../syllabus/CSC210-Syllabus-Fall2026.md">full syllabus</a>. All Logisim work is contained within a <strong>single <code>.circ</code> file</strong> that grows each week&mdash;never create a new file.</p>
+
+        <h3>Weekly Effort Expectation</h3>
+        <p>This is a <strong>3-unit course</strong> requiring approximately <strong>9 hours per week</strong>:</p>
+        <ul>
+          <li><strong>3 hours in-class</strong> — guided activities, SPA walkthroughs, hands-on Lab time</li>
+          <li><strong>6 hours out-of-class</strong> — SPA content, assignments, textbook reading</li>
+        </ul>
+
+        <h3>Assessments</h3>
+        <p>Key assessments for Week 1's phase (Phase 1 — Digital Foundations, Weeks 1&ndash;4):</p>
+        <ul>
+          <li><strong>Quiz 1</strong> (Week 4) — Covers Weeks 1&ndash;4, all of Phase 1. This includes everything from this week's binary representation through sequential logic and flip-flops.</li>
+          <li><strong>Midterm Exam</strong> (Week 8) — Covers Weeks 1&ndash;8, Phases 1 and 2.</li>
+        </ul>
+
+        <p>For the complete assessment schedule, see the <a href="../../syllabus/CSC210-Syllabus-Fall2026.md">full syllabus</a>.</p>
+      </section>
+
+      <!-- ============================================================
+           Section E — "Where Week 1 Fits in the Full Course" (Master Progression)
+           ============================================================ -->
+      <section id="sec-progress">
+        <h2>Where Week 1 Fits in the Full Course</h2>
+
+        <p>This course is built as a <strong>single continuous progression</strong>&mdash;not a sequence of disconnected topics&mdash;running from raw voltage to a complete, working CPU simulation. Week 1 is the first step on that ladder.</p>
+
+        <blockquote>
+          "Every program you have ever written exists inside your computer as nothing more than patterns of electrical voltage. This week, you learn the rules that make that possible."
+        </blockquote>
+
+        <!-- Condensed Master Progression Timeline -->
+        <div class="progression">
+          <div class="progression__item active">
+            <div class="progression__label">Week 1 — Binary & Number Representation</div>
+            <div class="progression__detail">Bits, bytes, bases, signed/unsigned, floating-point, character encoding, memory layout</div>
+          </div>
+          <div class="progression__item">
+            <div class="progression__label">Weeks 2&ndash;4 — Digital Logic</div>
+            <div class="progression__detail">Logic gates → combinational circuits → sequential circuits / flip-flops</div>
+          </div>
+          <div class="progression__item">
+            <div class="progression__label">Weeks 5&ndash;8 — Assembly Language & Hardware</div>
+            <div class="progression__detail">Registers, ALU, RAM, MIPS programming (interleaved hardware + assembly tracks)</div>
+          </div>
+          <div class="progression__item">
+            <div class="progression__label">Weeks 9&ndash;12 — CPU Design Theory</div>
+            <div class="progression__detail">Von Neumann model, fetch-decode-execute, control unit, datapath integration</div>
+          </div>
+          <div class="progression__item">
+            <div class="progression__label">Weeks 13&ndash;17 — Integration & Modern Topics</div>
+            <div class="progression__detail">Complete CPU build, pipelining, cache, multicore, final project</div>
+          </div>
+        </div>
+
+        <div class="callout callout--aha">
+          <div class="callout__title">The Thread That Connects Everything</div>
+          <p>Every new concept in this course is introduced with three elements:</p>
+          <ol>
+            <li><strong>"Here's what we have so far"</strong> — anchored to the concept you just learned</li>
+            <li><strong>"Here's the problem we can't solve yet"</strong> — creating the need for the next concept</li>
+            <li><strong>"Here's what we can now do"</strong> — closing the loop and showing forward progress</li>
+          </ol>
+          <p>No module will feel disconnected. Every step is a necessary rung on a single ladder from raw voltage to a working computer.</p>
+        </div>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">Ready to Begin?</div>
+          <p>When you are ready, start with <a href="01-why-binary.html"><strong>SPA 1: Why Binary?</strong></a> — where we begin at the physical foundation: the two voltage states that make everything possible.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== Footer ==================== -->
+  <footer class="sp-footer">
+    CSC210 — Computer Organization & Architecture &nbsp;|&nbsp; Fall 2026 &nbsp;|&nbsp; Mendocino College<br>
+    <span style="opacity:.7;">Instructor: David Pai</span>
+  </footer>
+
+  <!-- ==================== Scripts ==================== -->
+  <script src="shared/nav.js"></script>
+</body>
+</html>
