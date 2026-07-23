@@ -1,48 +1,30 @@
 /* ============================================================
    CSC210 — Week 1 SPA Shared Navigation Component
    ============================================================
-   Provides sidebar navigation highlighting and SPA-to-SPA
-   links.  Vanilla JS — no dependencies.
+   Provides in-page section navigation (scroll-spy) and
+   optional section-level sidebar links.  Vanilla JS — no
+   dependencies.
+
+   NOTE: Cross-SPA navigation is intentionally not provided
+   by this script. SPA-to-SPA links are handled by the LMS
+   or platform navigation, not intra-SPA JavaScript.
    ============================================================ */
 
 (function () {
   'use strict';
 
-  /* ---------- Configuration ---------- */
-  // Each SPA registers its own entry here.
-  // Update `current` to highlight the active link.
-  var SPAS = [
-    { id: '00', href: '00-orientation.html',       label: 'Orientation',               time: '~15 min' },
-    { id: '01', href: '01-why-binary.html',        label: 'Why Binary?',              time: '~2.5 hr' },
-    { id: '02', href: '02-base-conversion.html',   label: 'Converting Between Bases', time: '~1.5 hr' },
-    { id: '03', href: '03-signed-integers.html',   label: 'Signed Integers',          time: '~2.0 hr' },
-    { id: '04', href: '04-beyond-integers.html',   label: 'Beyond Integers',          time: '~2.5 hr' }
-  ];
-
   /* ---------- Public API ---------- */
   window.SPANav = {
     /**
-     * Initialise the sidebar for the current SPA.
-     * @param {string} currentId  The id of the active SPA (e.g. '00').
+     * Initialise in-page section navigation.
      * @param {string} [sectionIds]  Comma-separated list of section ids for
      *                               intra-SPA sidebar links (optional).
      */
-    init: function (currentId, sectionIds) {
-      this.highlightCurrent(currentId);
+    init: function (sectionIds) {
       if (sectionIds) {
         this.buildSectionLinks(sectionIds);
       }
       this.setupScrollSpy();
-    },
-
-    /* Highlight the current SPA link in every sidebar. */
-    highlightCurrent: function (currentId) {
-      var links = document.querySelectorAll('.sp-sidebar__nav a[data-spa]');
-      for (var i = 0; i < links.length; i++) {
-        if (links[i].getAttribute('data-spa') === currentId) {
-          links[i].classList.add('active');
-        }
-      }
     },
 
     /* Build section-level links from a comma-separated id list. */
@@ -94,11 +76,8 @@
   }
 
   function autoInit() {
-    var currentId = document.documentElement.getAttribute('data-spa-id');
     var sectionIds = document.documentElement.getAttribute('data-section-ids');
-    if (currentId) {
-      SPANav.init(currentId, sectionIds);
-    }
+    SPANav.init(sectionIds);
   }
 
 })();

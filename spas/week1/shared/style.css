@@ -163,6 +163,24 @@ a:hover { text-decoration: underline; }
   margin: var(--space-sm) 0;
 }
 
+/* ---------- Static SPA Labels (non-interactive) ---------- */
+/* Replaces cross-SPA <a> links with plain <span> elements.
+   The --active variant provides a visual "current SPA" indicator. */
+.sp-sidebar__spa {
+  display: block;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--fs-sm);
+  color: var(--color-text);
+  border-radius: var(--radius);
+  border-left: 3px solid transparent;
+}
+
+.sp-sidebar__spa--active {
+  border-left-color: var(--color-primary-lt);
+  background: var(--color-code-bg);
+  font-weight: 600;
+}
+
 /* ---------- Main Content ---------- */
 .sp-main {
   flex: 1;
