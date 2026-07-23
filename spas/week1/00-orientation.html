@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-spa-id="00" data-section-ids="sec-hook,sec-path,sec-tools,sec-how,sec-progress">
+<html lang="en" data-spa-id="00">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSC210 — Week 1 Orientation: What Is a Byte?</title>
   <link rel="stylesheet" href="shared/style.css">
+  <style>
+    /* Override: single-column layout for orientation SPA */
+    .sp-shell {
+      max-width: 780px;
+    }
+  </style>
 </head>
 <body>
 
@@ -12,33 +18,28 @@
   <header class="sp-header">
     <div class="sp-header__title">CSC210 — Computer Organization & Architecture</div>
     <nav class="sp-header__breadcrumb" aria-label="Breadcrumb">
-      <a href="../../syllabus/CSC210-Syllabus-Fall2026.md">Syllabus</a> &rsaquo;
-      <a href="#">Week 1</a> &rsaquo;
-      <span>Orientation</span>
+      Week 1 &rsaquo; <span>Orientation</span>
     </nav>
   </header>
 
-  <!-- ==================== Shell ==================== -->
+  <!-- ==================== Shell (Single Column) ==================== -->
   <div class="sp-shell">
-
-    <!-- ---------- Sidebar ---------- -->
-    <aside class="sp-sidebar">
-      <div class="sp-sidebar__title">Week 1 SPAs</div>
-      <ul class="sp-sidebar__nav">
-        <li><a href="00-orientation.html" data-spa="00">Orientation</a></li>
-        <li><a href="01-why-binary.html" data-spa="01">Why Binary?</a></li>
-        <li><a href="02-base-conversion.html" data-spa="02">Converting Between Bases</a></li>
-        <li><a href="03-signed-integers.html" data-spa="03">Signed Integers & Two's Complement</a></li>
-        <li><a href="04-beyond-integers.html" data-spa="04">Beyond Integers</a></li>
-        <li><hr class="sp-sidebar__divider"></li>
-        <li><a href="../../syllabus/CSC210-Syllabus-Fall2026.md">Full Syllabus</a></li>
-      </ul>
-
-      <div class="sp-sidebar__title" style="margin-top:1.5rem;">On This Page</div>
-      <ul class="sp-sidebar__nav sp-sidebar__sections">
-        <!-- Section links injected by nav.js -->
-      </ul>
-    </aside>
+    <div>
+      <!-- SPA Navigation — compact inline list -->
+      <nav aria-label="Week 1 SPAs" style="margin-bottom:2rem;">
+        <ul class="sp-sidebar__nav" style="display:flex;flex-wrap:wrap;gap:.25rem .5rem;">
+          <li><a href="00-orientation.html" data-spa="00" style="white-space:nowrap;">Orientation</a></li>
+          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
+          <li><a href="01-why-binary.html" data-spa="01" style="white-space:nowrap;">Why Binary?</a></li>
+          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
+          <li><a href="02-base-conversion.html" data-spa="02" style="white-space:nowrap;">Converting Between Bases</a></li>
+          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
+          <li><a href="03-signed-integers.html" data-spa="03" style="white-space:nowrap;">Signed Integers</a></li>
+          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
+          <li><a href="04-beyond-integers.html" data-spa="04" style="white-space:nowrap;">Beyond Integers</a></li>
+        </ul>
+      </nav>
+    </div>
 
     <!-- ---------- Main Content ---------- -->
     <main class="sp-main">
@@ -160,7 +161,7 @@
           <div class="tool-card__icon">🔌</div>
           <div>
             <div class="tool-card__name">Logisim Classic 2.7.1</div>
-            <div class="tool-card__desc">Starting Week 2, you will build digital circuits from primitive logic gates (AND, OR, NOT, NAND, etc.). By the end of the course, you will have constructed a complete CPU simulation&mdash;all within a single <code>.circ</code> file. Hosted for download on the course page.</div>
+            <div class="tool-card__desc">Starting Week 2, you will build digital circuits from primitive logic gates (AND, OR, NOT, NAND, etc.). By the end of the course, you will have constructed a complete CPU simulation&mdash;all within a single <code>.circ</code> file.</div>
           </div>
         </div>
 
@@ -190,10 +191,10 @@
         <h2>How This Course Works</h2>
 
         <h3>Accessing Course Materials</h3>
-        <p>All primary learning content is delivered through <strong>Single-Page Applications (SPAs)</strong> like this one. Each SPA contains prose, interactive widgets, and explicit references to the Saylor CS301 textbook. Navigate through SPAs in the order presented on the sidebar.</p>
+        <p>All primary learning content is delivered through <strong>Single-Page Applications (SPAs)</strong> like this one. Each SPA contains prose, interactive widgets, and explicit references to the Saylor CS301 textbook. Navigate through SPAs in the order presented above.</p>
 
         <h3>Submitting Assignments</h3>
-        <p>Assignments include Logisim circuit checkpoints, MIPS programming exercises, and research papers. Submission instructions and deadlines are listed in the <a href="../../syllabus/CSC210-Syllabus-Fall2026.md">full syllabus</a>. All Logisim work is contained within a <strong>single <code>.circ</code> file</strong> that grows each week&mdash;never create a new file.</p>
+        <p>Assignments include Logisim circuit checkpoints, MIPS programming exercises, and research papers. All Logisim work is contained within a <strong>single <code>.circ</code> file</strong> that grows each week&mdash;never create a new file.</p>
 
         <h3>Weekly Effort Expectation</h3>
         <p>This is a <strong>3-unit course</strong> requiring approximately <strong>9 hours per week</strong>:</p>
@@ -208,8 +209,6 @@
           <li><strong>Quiz 1</strong> (Week 4) — Covers Weeks 1&ndash;4, all of Phase 1. This includes everything from this week's binary representation through sequential logic and flip-flops.</li>
           <li><strong>Midterm Exam</strong> (Week 8) — Covers Weeks 1&ndash;8, Phases 1 and 2.</li>
         </ul>
-
-        <p>For the complete assessment schedule, see the <a href="../../syllabus/CSC210-Syllabus-Fall2026.md">full syllabus</a>.</p>
       </section>
 
       <!-- ============================================================
