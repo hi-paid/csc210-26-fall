@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" data-spa-id="01">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSC210 — SPA 1: Why Binary?</title>
+  <link rel="stylesheet" href="shared/style.css">
+</head>
+<body>
+
+  <!-- ==================== Header ==================== -->
+  <header class="sp-header">
+    <div class="sp-header__title">CSC210 — Computer Organization & Architecture</div>
+    <nav class="sp-header__breadcrumb" aria-label="Breadcrumb">
+      Week 1 &rsaquo; <span>Why Binary?</span>
+    </nav>
+  </header>
+
+  <!-- ==================== Shell (Sidebar + Main) ==================== -->
+  <div class="sp-shell">
+
+    <!-- ---------- Sidebar Navigation ---------- -->
+    <aside class="sp-sidebar">
+      <div class="sp-sidebar__title">Week 1 SPAs</div>
+      <ul class="sp-sidebar__nav">
+        <li><span class="sp-sidebar__spa">Orientation</span></li>
+        <li><span class="sp-sidebar__spa sp-sidebar__spa--active">Why Binary?</span></li>
+        <li><span class="sp-sidebar__spa">Converting Between Bases</span></li>
+        <li><span class="sp-sidebar__spa">Signed Integers</span></li>
+        <li><span class="sp-sidebar__spa">Beyond Integers</span></li>
+        <li class="sp-sidebar__divider"></li>
+        <li class="sp-sidebar__sections"></li>
+      </ul>
+    </aside>
+
+    <!-- ---------- Main Content ---------- -->
+    <main class="sp-main">
+
+      <h1>Why Binary?</h1>
+      <p><strong>Estimated time:</strong> ~2.5 hours &nbsp;|&nbsp; <strong>Sections:</strong> 1.1&ndash;1.3 &nbsp;|&nbsp; <strong>Prerequisite:</strong> Week 1 Orientation</p>
+
+      <!-- Opening Prose -->
+      <div class="callout callout--hook">
+        <div class="callout__title">What We Have / What We Can't Do / What We Can Now Do</div>
+        <p><strong>What you already know:</strong> You can count, add, and represent any number using the ten digits (0&ndash;9) you've used since childhood. You know what a "byte" is, at least vaguely, and you've seen "hex" in color codes or memory addresses.</p>
+        <p><strong>What you can't do yet:</strong> Explain how a machine that only understands "voltage present" or "voltage absent"&mdash;two states&mdash;can represent the number 2,731, the letter <code>'M'</code>, or the color blue.</p>
+        <p><strong>What you will be able to do by the end of this SPA:</strong> Understand the physical constraint that forces computers to use binary. Use the vocabulary (bit, byte, word) fluently. Read and interpret numbers in binary, hexadecimal, and octal.</p>
+      </div>
+
+      <p>Every program you have ever written&mdash;every variable, every string, every image you've loaded&mdash;exists inside your computer as nothing more than patterns of electrical voltage. A wire either has voltage on it, or it doesn't. Two states. That is the entire physical vocabulary of a digital computer.</p>
+
+      <p>Yet the computer you are sitting at right now can display this sentence in color, play video, run a web browser with dozens of tabs, and compile code you write in Python, Java, or C. How is that possible when the underlying hardware only understands <strong>ON</strong> and <strong>OFF</strong>?</p>
+
+      <p>The answer is <strong>representation</strong>. Just as the ten symbols you learned in elementary school (0, 1, 2, 3, 4, 5, 6, 7, 8, 9) can represent any number you care to name through position and place value, the two symbols a computer has (0 and 1) can represent anything&mdash;if you know the rules for encoding it.</p>
+
+      <p>This week you will learn those rules. Let's start at the beginning.</p>
+
+      <!-- ============================================================
+           Section 1.1 — Why Binary? The Physical Constraint
+           ============================================================ -->
+      <section id="sec-1-1">
+        <h2>1.1 — Why Binary? The Physical Constraint</h2>
+
+        <p>A digital computer is built from billions of tiny switches called <strong>transistors</strong>. Each transistor is either conducting electricity (ON) or not conducting (OFF). There is no "kinda on." There is no "maybe." Two states.</p>
+
+        <p>Engineers map these two states to the symbols 0 and 1:</p>
+        <ul>
+          <li><strong>0</strong> = no voltage (OFF, low, false)</li>
+          <li><strong>1</strong> = voltage present (ON, high, true)</li>
+        </ul>
+
+        <p>This is not an arbitrary choice. It is a <strong>physical necessity</strong>. You could label the states "A" and "B" if you wanted, but 0 and 1 are convenient because they also let you do math.</p>
+
+        <h3>Why not use more states?</h3>
+        <p>You could, in theory, design a circuit that distinguishes between five different voltage levels and get five "digits" per wire. But noise, manufacturing variation, and signal degradation make it extremely hard to reliably distinguish more than two levels over long distances and billions of components. Binary is not the most efficient representation of information&mdash;but it is the most <strong>reliable</strong>.</p>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">CS301 Reference</div>
+          <p>CS301 does not have a dedicated section on "why binary" at a physical level. This explanation is provided directly in this SPA.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Section 1.2 — Bits, Bytes, and Words
+           ============================================================ -->
+      <section id="sec-1-2">
+        <h2>1.2 — Bits, Bytes, and Words: The Vocabulary</h2>
+
+        <p>Before we do any math, we need vocabulary. Every discussion of data representation in this course uses these terms:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Definition</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Bit</strong></td>
+              <td>A single binary digit: 0 or 1. The smallest unit of information.</td>
+              <td><code>1</code> is one bit. <code>0</code> is one bit.</td>
+            </tr>
+            <tr>
+              <td><strong>Byte</strong></td>
+              <td>Exactly 8 bits, grouped together. The standard unit of addressable memory.</td>
+              <td><code>01000010</code> is one byte.</td>
+            </tr>
+            <tr>
+              <td><strong>Word</strong></td>
+              <td>The natural data size of a CPU. Historically 16, 32, or 64 bits. MIPS uses 32-bit words.</td>
+              <td>A 32-bit word = 4 bytes = <code>01000010 00000001 11111111 00000010</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Why bytes?</h3>
+        <p>Early computer systems used bytes of different sizes (6, 7, 9 bits). The 8-bit byte won out because it can represent all 128 ASCII characters with room to spare (256 values), and it is a power of 2, which maps cleanly to binary addressing.</p>
+
+        <h3>Why does "word" matter?</h3>
+        <p>When you write MIPS assembly in Week 5, you will load and store <strong>words</strong> (32 bits) as the default unit. The CPU's internal data paths&mdash;the wires that carry data between components&mdash;are word-wide. Understanding the difference between a byte (8 bits) and a word (32 bits) prevents a class of bugs where you accidentally treat a multi-byte value as a single byte.</p>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">CS301 Reference</div>
+          <p>The bit/byte/word concepts appear throughout Saylor CS301 <strong>Unit 2</strong>. Log into your <a href="https://learn.saylor.org/mod/page/view.php?id=20643" target="_blank" rel="noopener">CS301 course page</a> and navigate to Unit 2 for additional context. This SPA is the primary source for the vocabulary as used in this course.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Section 1.3 — Number Systems: Binary, Hexadecimal, Octal
+           ============================================================ -->
+      <section id="sec-1-3">
+        <h2>1.3 — Number Systems: Binary, Hexadecimal, Octal</h2>
+
+        <p>You think in base 10 (decimal) because humans have ten fingers. Computers "think" in base 2 (binary) because they have two voltage states. But writing and reading long binary numbers is tedious for humans, so we also use base 16 (hexadecimal) as a compact shorthand.</p>
+
+        <!-- Binary -->
+        <h3>Binary (Base 2)</h3>
+        <p>Uses digits 0 and 1. Each position represents a power of 2, right to left:</p>
+
+        <pre><code>Position:  7   6   5   4   3   2   1   0
+Power of 2: 128 64  32  16  8   4   2   1
+Bits:       0   1   0   0   0   0   1   0
+
+Value = 64 + 2 = 66</code></pre>
+
+        <p>So <code>01000010</code> in binary = 66 in decimal.</p>
+
+        <!-- Hexadecimal -->
+        <h3>Hexadecimal (Base 16)</h3>
+        <p>Uses digits 0&ndash;9 and letters A&ndash;F. Each position represents a power of 16:</p>
+
+        <pre><code>Hex:    4   2
+Digit:  4   2
+Value:  4&times;16 + 2&times;1 = 64 + 2 = 66</code></pre>
+
+        <p>So <code>0x42</code> in hex = 66 in decimal = <code>01000010</code> in binary.</p>
+
+        <h3>The Magic of Hex</h3>
+        <p>Every hex digit maps to exactly 4 binary bits:</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin:var(--space-lg)0;">
+          <table>
+            <thead>
+              <tr><th>Hex</th><th>Binary</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>0</td><td>0000</td></tr>
+              <tr><td>1</td><td>0001</td></tr>
+              <tr><td>2</td><td>0010</td></tr>
+              <tr><td>3</td><td>0011</td></tr>
+              <tr><td>4</td><td>0100</td></tr>
+              <tr><td>5</td><td>0101</td></tr>
+              <tr><td>6</td><td>0110</td></tr>
+              <tr><td>7</td><td>0111</td></tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr><th>Hex</th><th>Binary</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>8</td><td>1000</td></tr>
+              <tr><td>9</td><td>1001</td></tr>
+              <tr><td>A</td><td>1010</td></tr>
+              <tr><td>B</td><td>1011</td></tr>
+              <tr><td>C</td><td>1100</td></tr>
+              <tr><td>D</td><td>1101</td></tr>
+              <tr><td>E</td><td>1110</td></tr>
+              <tr><td>F</td><td>1111</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>This means you can convert between binary and hex by simply <strong>grouping bits into sets of 4</strong>&mdash;no math required. This is why hex is the universal language for talking about binary data.</p>
+
+        <!-- Octal -->
+        <h3>Octal (Base 8)</h3>
+        <p>Uses digits 0&ndash;7. Each octal digit maps to exactly 3 binary bits. Less commonly used today but appears in Unix file permissions and some legacy systems. You will encounter it; you don't need to be fluent in it.</p>
+
+        <div class="callout callout--aha">
+          <div class="callout__title">Key Takeaway</div>
+          <p>The three number systems are just different ways of writing the same value. The computer only understands binary. Decimal is for humans. Hexadecimal is for humans who need to talk about binary data without writing 32 digits every time. In the next SPA, you will learn the mechanical techniques for converting between all three.</p>
+        </div>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">CS301 Reference</div>
+          <p>Number systems are directly covered in Saylor CS301 <strong>Unit 2: Instructions &mdash; Hardware Language</strong>. Log into your <a href="https://learn.saylor.org/mod/page/view.php?id=20643" target="_blank" rel="noopener">CS301 course page</a> and navigate to Unit 2 for the sections on binary, hexadecimal, and octal number systems. This SPA provides the course-specific framing and the hex-to-binary grouping table; use CS301 Unit 2 for a deeper walkthrough.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           End-of-SPA Forward Reference
+           ============================================================ -->
+      <section id="sec-forward">
+        <h2>What Comes Next</h2>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">Forward Reference</div>
+          <p>Now that you know what binary and hex look like, the next SPA teaches you how to convert between them&mdash;a skill you will use every week of this course. You will learn the repeated-division method for decimal-to-binary, the power-sum method for binary-to-decimal, and the grouping technique for binary-to-hex conversions.</p>
+        </div>
+
+        <div style="text-align:center;margin:var(--space-xl)0;">
+          <div class="spa-card__btn" style="font-size:var(--fs-md);padding:var(--space-md) var(--space-xl);">Continue to the next item in this module to begin SPA 2: Converting Between Bases</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== Footer ==================== -->
+  <footer class="sp-footer">
+    CSC210 — Computer Organization & Architecture &nbsp;|&nbsp; Fall 2026 &nbsp;|&nbsp; Mendocino College<br>
+    <span style="opacity:.7;">Instructor: David Pai</span>
+  </footer>
+
+  <!-- ==================== Scripts ==================== -->
+  <script src="shared/nav.js"></script>
+  <script>
+    /* Initialise sidebar with section links for 1.1, 1.2, 1.3 */
+    SPANav.init('sec-1-1,sec-1-2,sec-1-3,sec-forward');
+  </script>
+</body>
+</html>
