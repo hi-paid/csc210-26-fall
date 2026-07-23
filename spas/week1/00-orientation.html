@@ -8,7 +8,11 @@
   <style>
     /* Override: single-column layout for orientation SPA */
     .sp-shell {
+      display: block;
       max-width: 780px;
+    }
+    .sp-main {
+      padding-left: 0;
     }
   </style>
 </head>
@@ -24,23 +28,6 @@
 
   <!-- ==================== Shell (Single Column) ==================== -->
   <div class="sp-shell">
-    <div>
-      <!-- SPA Navigation — compact inline list -->
-      <nav aria-label="Week 1 SPAs" style="margin-bottom:2rem;">
-        <ul class="sp-sidebar__nav" style="display:flex;flex-wrap:wrap;gap:.25rem .5rem;">
-          <li><a href="00-orientation.html" data-spa="00" style="white-space:nowrap;">Orientation</a></li>
-          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
-          <li><a href="01-why-binary.html" data-spa="01" style="white-space:nowrap;">Why Binary?</a></li>
-          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
-          <li><a href="02-base-conversion.html" data-spa="02" style="white-space:nowrap;">Converting Between Bases</a></li>
-          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
-          <li><a href="03-signed-integers.html" data-spa="03" style="white-space:nowrap;">Signed Integers</a></li>
-          <li style="display:flex;align-items:center;color:var(--color-text-muted);">·</li>
-          <li><a href="04-beyond-integers.html" data-spa="04" style="white-space:nowrap;">Beyond Integers</a></li>
-        </ul>
-      </nav>
-    </div>
-
     <!-- ---------- Main Content ---------- -->
     <main class="sp-main">
 
