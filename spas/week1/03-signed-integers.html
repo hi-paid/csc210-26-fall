@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-spa-id="03" data-section-ids="sec-1-6,sec-1-7,sec-widget-3,sec-forward">
+<html lang="en" data-spa-id="03">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -295,30 +295,8 @@
     </nav>
   </header>
 
-  <!-- ==================== Shell (Sidebar + Main) ==================== -->
-  <div class="sp-shell">
-
-    <!-- ---------- Sidebar Navigation ---------- -->
-    <aside class="sp-sidebar">
-      <div class="sp-sidebar__title">Week 1 SPAs</div>
-      <nav aria-label="SPA Navigation">
-        <span class="sp-sidebar__spa">SPA 0 — Orientation</span>
-        <span class="sp-sidebar__spa">SPA 1 — Why Binary?</span>
-        <span class="sp-sidebar__spa">SPA 2 — Converting Between Bases</span>
-        <span class="sp-sidebar__spa sp-sidebar__spa--active">SPA 3 — Signed Integers</span>
-        <span class="sp-sidebar__spa">SPA 4 — Beyond Integers</span>
-      </nav>
-
-      <div class="sp-sidebar__divider"></div>
-
-      <div class="sp-sidebar__title">Sections</div>
-      <ul class="sp-sidebar__nav sp-sidebar__sections">
-        <!-- Populated by nav.js from data-section-ids -->
-      </ul>
-    </aside>
-
-    <!-- ---------- Main Content ---------- -->
-    <main class="sp-main">
+  <!-- ==================== Main Content (Single Column) ==================== -->
+  <main class="sp-main sp-main--full">
 
       <h1>Signed Integers & Two's Complement</h1>
       <p><strong>Estimated time:</strong> ~2.0 hours &nbsp;|&nbsp; <strong>Sections:</strong> 1.6&ndash;1.7 &nbsp;|&nbsp; <strong>Prerequisite:</strong> SPA 2 (Converting Between Bases)</p>
@@ -531,8 +509,7 @@ Value = -128 + 64 + 32 + 16 + 4 = -12</code></pre>
         </div>
       </section>
 
-    </main>
-  </div>
+  </main>
 
   <!-- ==================== Footer ==================== -->
   <footer class="sp-footer">
@@ -541,7 +518,6 @@ Value = -128 + 64 + 32 + 16 + 4 = -12</code></pre>
   </footer>
 
   <!-- ==================== Scripts ==================== -->
-  <script src="shared/nav.js"></script>
   <script>
   /* ============================================================
      Widget 3: Two's Complement Explorer
