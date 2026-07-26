@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en" data-spa-id="03" data-section-ids="sec-1-6,sec-1-7,sec-widget-3,sec-forward">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSC210 — SPA 3: Signed Integers & Two's Complement</title>
+  <link rel="stylesheet" href="shared/style.css">
+  <style>
+    /* ---------- Widget 3: Two's Complement Explorer ---------- */
+    .widget-card {
+      background: var(--color-surface);
+      border: 2px solid var(--color-primary-lt);
+      border-radius: var(--radius);
+      padding: var(--space-lg);
+      margin: var(--space-xl) 0;
+      box-shadow: var(--shadow-lg);
+    }
+    .widget-card__title {
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-sm);
+    }
+    .widget-card__subtitle {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-md);
+    }
+    .widget-input-row {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: flex-end;
+      margin-bottom: var(--space-md);
+      flex-wrap: wrap;
+    }
+    .widget-input-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .widget-input-group label {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      margin-bottom: var(--space-xs);
+      color: var(--color-text);
+    }
+    .widget-input-group input[type="number"] {
+      font-family: var(--font-mono);
+      font-size: var(--fs-base);
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      background: var(--color-bg);
+      color: var(--color-text);
+      width: 140px;
+      transition: border-color .15s;
+    }
+    .widget-input-group input[type="number"]:focus {
+      outline: none;
+      border-color: var(--color-primary-lt);
+      box-shadow: 0 0 0 2px rgba(41,128,185,.2);
+    }
+    .widget-input-group input[type="number"].error {
+      border-color: var(--color-danger);
+      background: #fdf0ef;
+    }
+    .widget-btn {
+      font-family: var(--font-sans);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      padding: var(--space-sm) var(--space-md);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .widget-btn:active {
+      transform: scale(.97);
+    }
+    .widget-btn--primary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+    .widget-btn--primary:hover {
+      background: var(--color-primary-lt);
+    }
+    .widget-btn--accent {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    .widget-btn--accent:hover {
+      background: var(--color-accent-hov);
+    }
+    .widget-btn--outline {
+      background: transparent;
+      color: var(--color-primary-lt);
+      border: 1px solid var(--color-primary-lt);
+    }
+    .widget-btn--outline:hover {
+      background: var(--color-code-bg);
+    }
+    .widget-btn--small {
+      font-size: var(--fs-xs);
+      padding: var(--space-xs) var(--space-sm);
+    }
+
+    /* Bit display row */
+    .bit-row {
+      display: flex;
+      gap: var(--space-xs);
+      margin: var(--space-sm) 0;
+      font-family: var(--font-mono);
+      font-size: var(--fs-base);
+    }
+    .bit-cell {
+      width: 32px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: var(--fs-md);
+      background: var(--color-surface);
+      color: var(--color-text);
+    }
+    .bit-cell.sign-bit {
+      border-color: var(--color-danger);
+      background: #fdf0ef;
+      color: var(--color-danger);
+    }
+    .bit-cell.one {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+    .bit-cell.sign-bit.one {
+      background: var(--color-danger);
+      color: #fff;
+      border-color: var(--color-danger);
+    }
+    .bit-labels {
+      display: flex;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-xs);
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+    .bit-labels span {
+      width: 32px;
+      text-align: center;
+    }
+
+    /* Comparison table */
+    .comparison-panel {
+      margin-top: var(--space-lg);
+    }
+    .comparison-panel__title {
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-sm);
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+    .comparison-table th,
+    .comparison-table td {
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid var(--color-border);
+      text-align: left;
+    }
+    .comparison-table th {
+      background: var(--color-code-bg);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    .comparison-table td {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+    }
+    .comparison-table .rep-name {
+      font-family: var(--font-sans);
+      font-weight: 600;
+    }
+    .comparison-table .dual-zero {
+      background: #fff3cd;
+      font-weight: 700;
+      color: var(--color-danger);
+    }
+
+    /* Derivation panel */
+    .derivation-panel {
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      line-height: 1.6;
+    }
+    .derivation-panel__title {
+      font-family: var(--font-sans);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .derivation-step {
+      margin-bottom: var(--space-xs);
+    }
+    .derivation-step .label {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    /* Preset demos */
+    .preset-row {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-md);
+    }
+    .preset-btn {
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      background: var(--color-surface);
+      color: var(--color-text);
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .preset-btn:hover {
+      background: var(--color-code-bg);
+      border-color: var(--color-primary-lt);
+    }
+
+    /* Display panels */
+    .display-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+    .display-box {
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-md);
+    }
+    .display-box__label {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-xs);
+    }
+    .display-box__value {
+      font-family: var(--font-mono);
+      font-size: var(--fs-md);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    @media (max-width: 600px) {
+      .display-grid {
+        grid-template-columns: 1fr;
+      }
+      .bit-cell {
+        width: 28px;
+        height: 32px;
+        font-size: var(--fs-sm);
+      }
+      .bit-labels span {
+        width: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== Header ==================== -->
+  <header class="sp-header">
+    <div class="sp-header__title">CSC210 — Computer Organization & Architecture</div>
+    <nav class="sp-header__breadcrumb" aria-label="Breadcrumb">
+      Week 1 &rsaquo; <span>Signed Integers & Two's Complement</span>
+    </nav>
+  </header>
+
+  <!-- ==================== Shell (Sidebar + Main) ==================== -->
+  <div class="sp-shell">
+
+    <!-- ---------- Sidebar Navigation ---------- -->
+    <aside class="sp-sidebar">
+      <div class="sp-sidebar__title">Week 1 SPAs</div>
+      <nav aria-label="SPA Navigation">
+        <span class="sp-sidebar__spa">SPA 0 — Orientation</span>
+        <span class="sp-sidebar__spa">SPA 1 — Why Binary?</span>
+        <span class="sp-sidebar__spa">SPA 2 — Converting Between Bases</span>
+        <span class="sp-sidebar__spa sp-sidebar__spa--active">SPA 3 — Signed Integers</span>
+        <span class="sp-sidebar__spa">SPA 4 — Beyond Integers</span>
+      </nav>
+
+      <div class="sp-sidebar__divider"></div>
+
+      <div class="sp-sidebar__title">Sections</div>
+      <ul class="sp-sidebar__nav sp-sidebar__sections">
+        <!-- Populated by nav.js from data-section-ids -->
+      </ul>
+    </aside>
+
+    <!-- ---------- Main Content ---------- -->
+    <main class="sp-main">
+
+      <h1>Signed Integers & Two's Complement</h1>
+      <p><strong>Estimated time:</strong> ~2.0 hours &nbsp;|&nbsp; <strong>Sections:</strong> 1.6&ndash;1.7 &nbsp;|&nbsp; <strong>Prerequisite:</strong> SPA 2 (Converting Between Bases)</p>
+
+      <!-- Opening Prose -->
+      <div class="callout callout--hook">
+        <div class="callout__title">What We Have / What We Can't Do / What We Can Now Do</div>
+        <p><strong>What you already know:</strong> You can convert fluently between decimal, binary, hex, and octal. You understand unsigned integer representation and the concept of overflow from SPA 2.</p>
+        <p><strong>What you can't do yet:</strong> Represent negative numbers in binary. The unsigned system only handles values from 0 upward. But every real program needs negative numbers. How do you encode &minus;5 in a fixed number of bits?</p>
+        <p><strong>What you will be able to do by the end of this SPA:</strong> Represent any signed integer in three different formats (sign-magnitude, one's complement, two's complement). Understand why two's complement is the universal choice used by every modern CPU. Perform the flip-and-add-1 derivation for any negative value.</p>
+      </div>
+
+      <p>In SPA 2 you learned that <em>n</em> unsigned bits can represent values from 0 to 2<sup>n</sup>&minus;1. But programs need negative numbers too. How do we encode a sign in a fixed number of bits?</p>
+
+      <p>Three historical approaches existed. Only one survived. Understanding all three &mdash; and why the others failed &mdash; is critical to understanding how your CPU actually works.</p>
+
+      <!-- ============================================================
+           Section 1.6 &mdash; Signed Integers: Three Representations
+           ============================================================ -->
+      <section id="sec-1-6">
+        <h2>1.6 &mdash; Signed Integers: Three Representations</h2>
+
+        <h3>Sign-Magnitude</h3>
+        <p>Use the leftmost (most significant) bit as a sign: <strong>0 = positive</strong>, <strong>1 = negative</strong>. The remaining bits are the magnitude.</p>
+
+        <pre><code>+6 in 8-bit sign-magnitude:  00000110
+-6 in 8-bit sign-magnitude:  10000110</code></pre>
+
+        <p><strong>Problem:</strong> Two representations of zero: <code>00000000</code> (+0) and <code>10000000</code> (&minus;0). Hardware must special-case both. Arithmetic circuits become more complex because the sign must be handled separately from the magnitude.</p>
+
+        <h3>One's Complement</h3>
+        <p>Negative numbers are formed by <strong>flipping every bit</strong> of the positive value.</p>
+
+        <pre><code>+6 in 8-bit:      00000110
+-6 in 1's comp:   11111001  (flip every bit)</code></pre>
+
+        <p><strong>Problem:</strong> Still two zeros: <code>00000000</code> (+0) and <code>11111111</code> (&minus;0). Also requires "end-around carry" in addition, which complicates the adder circuit.</p>
+
+        <h3>Two's Complement</h3>
+        <p>Negative numbers are formed by <strong>flipping every bit and adding 1</strong>.</p>
+
+        <pre><code>+6 in 8-bit:      00000110
+Flip all bits:    11111001
+Add 1:            11111010  = -6 in two's complement</code></pre>
+
+        <p><strong>Why it works:</strong> In two's complement, the leftmost bit has a <strong>negative</strong> place value. For an 8-bit value:</p>
+
+        <pre><code>Position:  7      6   5   4   3   2   1   0
+Value:   -128    64  32  16  8   4   2   1
+Bits:     1      1   1   1  0   1   0   0
+
+Value = -128 + 64 + 32 + 16 + 4 = -12</code></pre>
+
+        <p><strong>Range of 8-bit two's complement:</strong> &minus;128 to +127 (not symmetric &mdash; one more negative value because zero takes the +0 slot).</p>
+
+        <div class="callout callout--aha">
+          <div class="callout__title">Key Insight</div>
+          <p>The range is asymmetric: &minus;128 to +127. There is no +128 in 8-bit two's complement. The bit pattern <code>10000000</code> represents &minus;128 (not &minus;0). This is because &minus;128 = &minus;128 + 0, and there is no room for a separate &minus;0 representation.</p>
+        </div>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">CS301 Reference</div>
+          <p>Two's complement is covered in Saylor CS301 <strong>Unit 2</strong>. Log into your <a href="https://learn.saylor.org/mod/page/view.php?id=20643" target="_blank" rel="noopener">CS301 course page</a> and navigate to Unit 2. Sign-magnitude and one's complement are mentioned but not explored in depth. This SPA provides the full comparative treatment (all three representations) because understanding <em>why</em> the others failed is part of understanding why two's complement is the standard.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Section 1.7 &mdash; Why Two's Complement Wins
+           ============================================================ -->
+      <section id="sec-1-7">
+        <h2>1.7 &mdash; Why Two's Complement Wins</h2>
+
+        <p>Two's complement is not just a convention. It is the representation that makes <strong>hardware simplest</strong>. Here is why:</p>
+
+        <h3>1. Single representation of zero</h3>
+        <p>There is only one zero: <code>00000000</code>. No special-casing needed in comparisons or arithmetic.</p>
+
+        <h3>2. Addition works the same for all sign combinations</h3>
+        <p>You can add two positive numbers, two negative numbers, or a positive and a negative number using the <strong>exact same adder circuit</strong>. The hardware does not need to check the signs first.</p>
+
+        <p>Example: 5 + (&minus;3) in 4-bit two's complement:</p>
+        <pre><code>  5 = 0101
+- 3 = 1101   (flip 0011 &rarr; 1100, add 1 &rarr; 1101)
+-------
+       0010  = 2  (carry out of bit 3 is discarded)</code></pre>
+
+        <p>The same adder circuit that computes 5 + 3 also computes 5 + (&minus;3). This is not a coincidence &mdash; it is a mathematical property of two's complement that makes the ALU (built Week 6) dramatically simpler.</p>
+
+        <h3>3. Subtraction is just addition</h3>
+        <p>To compute A &minus; B, negate B (two's complement) and add. <strong>No separate subtraction circuit needed.</strong></p>
+
+        <h3>4. The most significant bit is a natural sign indicator</h3>
+        <p>If the MSB is 0, the value is non-negative. If 1, it is negative. No extra wire or flag needed.</p>
+
+        <div class="callout callout--aha">
+          <div class="callout__title">Universal Standard</div>
+          <p>Every modern CPU uses two's complement for signed integers. MIPS, x86, ARM &mdash; all of them. When you write <code>-5</code> in C or Java, the compiler stores it as the two's complement bit pattern. When you write assembly in Week 6, immediate values in instructions are encoded in two's complement.</p>
+        </div>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">CS301 Reference</div>
+          <p>The advantages of two's complement are discussed in Saylor CS301 <strong>Unit 2</strong>. Log into your <a href="https://learn.saylor.org/mod/page/view.php?id=20643" target="_blank" rel="noopener">CS301 course page</a> and navigate to Unit 2. This SPA adds the explicit arithmetic example (5 + (&minus;3)) and the hardware-simplicity argument, which connects forward to the ALU design.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Widget 3 &mdash; Two's Complement Explorer
+           ============================================================ -->
+      <section id="sec-widget-3">
+        <h2>Interactive: Two's Complement Explorer</h2>
+
+        <div class="widget-card" id="widget-twos-complement">
+          <div class="widget-card__title">Widget 3: Two's Complement Explorer</div>
+          <div class="widget-card__subtitle">Enter a decimal value (&minus;128 to +127) to see how it is represented in all three signed formats, plus unsigned.</div>
+
+          <!-- Input -->
+          <div class="widget-input-row">
+            <div class="widget-input-group">
+              <label for="tc-value">Decimal Value</label>
+              <input type="number" id="tc-value" min="-128" max="127" placeholder="e.g. -6" oninput="TCExplorer.update()">
+            </div>
+            <button class="widget-btn widget-btn--primary" onclick="TCExplorer.update()">Explore</button>
+            <button class="widget-btn widget-btn--outline" onclick="TCExplorer.clear()">Clear</button>
+          </div>
+
+          <!-- Preset Demonstrations -->
+          <div style="margin-bottom:var(--space-sm);">
+            <span style="font-size:var(--fs-sm);font-weight:600;color:var(--color-text-muted);">Quick Demos:</span>
+            <div class="preset-row">
+              <button class="preset-btn" onclick="TCExplorer.setPreset(0)">0</button>
+              <button class="preset-btn" onclick="TCExplorer.setPreset(1)">1</button>
+              <button class="preset-btn" onclick="TCExplorer.setPreset(-1)">&minus;1</button>
+              <button class="preset-btn" onclick="TCExplorer.setPreset(6)">6</button>
+              <button class="preset-btn" onclick="TCExplorer.setPreset(-6)">&minus;6</button>
+              <button class="preset-btn" onclick="TCExplorer.setPreset(127)">127</button>
+              <button class="preset-btn" onclick="TCExplorer.setPreset(-128)">&minus;128</button>
+              <button class="preset-btn" onclick="TCExplorer.setPreset(255)">11111111 (unsigned 255)</button>
+            </div>
+          </div>
+
+          <!-- Bit Display -->
+          <div id="tc-bit-display" style="display:none;">
+            <div class="bit-labels" id="tc-bit-labels"></div>
+            <div class="bit-row" id="tc-bit-row"></div>
+          </div>
+
+          <!-- Display Grid: Two's Complement, Unsigned -->
+          <div class="display-grid" id="tc-display-grid" style="display:none;">
+            <div class="display-box">
+              <div class="display-box__label">Two's Complement Binary</div>
+              <div class="display-box__value" id="tc-bin"></div>
+            </div>
+            <div class="display-box">
+              <div class="display-box__label">Same Bits as Unsigned</div>
+              <div class="display-box__value" id="tc-unsigned"></div>
+            </div>
+            <div class="display-box">
+              <div class="display-box__label">Hexadecimal</div>
+              <div class="display-box__value" id="tc-hex"></div>
+            </div>
+            <div class="display-box">
+              <div class="display-box__label">Decimal Input</div>
+              <div class="display-box__value" id="tc-decimal"></div>
+            </div>
+          </div>
+
+          <!-- Derivation Panel -->
+          <div class="derivation-panel" id="tc-derivation" style="display:none;">
+            <div class="derivation-panel__title" id="tc-deriv-title"></div>
+            <div id="tc-deriv-steps"></div>
+          </div>
+
+          <!-- Comparison Table -->
+          <div class="comparison-panel" id="tc-comparison" style="display:none;">
+            <div class="comparison-panel__title">Side-by-Side Comparison: All Three Representations</div>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Representation</th>
+                  <th>Bit Pattern (8-bit)</th>
+                  <th>Same Bits as Unsigned</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="tc-comparison-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           End-of-SPA Forward Reference
+           ============================================================ -->
+      <section id="sec-forward">
+        <h2>What Comes Next</h2>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">Forward Reference</div>
+          <p>Two's complement is how every modern CPU stores signed integers. In Week 6, you will build the ALU that adds these values &mdash; and you will see why two's complement makes the hardware dramatically simpler. The same adder circuit handles all sign combinations because subtraction is just addition with a negated operand.</p>
+        </div>
+
+        <div class="callout callout--forward">
+          <div class="callout__title">What's Next in Week 1</div>
+          <p>You now understand signed integers. The final SPA for Week 1 extends the "bits represent data" idea to floating-point numbers, character encoding, and memory layout. It concludes with the synthesis section ("The Same Byte, Four Meanings") that ties everything together. <strong>Note:</strong> The synthesis section in SPA 4 references two's complement from this SPA, so complete SPA 3 before reaching the end of SPA 4.</p>
+        </div>
+
+        <div style="text-align:center;margin:var(--space-xl)0;">
+          <div class="spa-card__btn" style="font-size:var(--fs-md);padding:var(--space-md) var(--space-xl);">Continue to the next item in this module to begin SPA 4: Beyond Integers</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== Footer ==================== -->
+  <footer class="sp-footer">
+    CSC210 — Computer Organization & Architecture &nbsp;|&nbsp; Fall 2026 &nbsp;|&nbsp; Mendocino College<br>
+    <span style="opacity:.7;">Instructor: David Pai</span>
+  </footer>
+
+  <!-- ==================== Scripts ==================== -->
+  <script src="shared/nav.js"></script>
+  <script>
+  /* ============================================================
+     Widget 3: Two's Complement Explorer
+     ============================================================
+     Self-contained widget module.  Provides an 8-bit signed
+     integer explorer showing two's complement representation,
+     step-by-step derivation, unsigned interpretation, and a
+     side-by-side comparison of sign-magnitude, one's complement,
+     and two's complement for the same value.
+     ============================================================ */
+  (function () {
+    'use strict';
+
+    var TCExplorer = {
+      bits: 8,
+
+      /* ---------- Public methods ---------- */
+      update: function () {
+        var input = document.getElementById('tc-value');
+        var val = parseInt(input.value, 10);
+
+        // Validation
+        if (isNaN(val) || input.value.trim() === '') {
+          this.hideAll();
+          input.classList.remove('error');
+          return;
+        }
+
+        // For the preset button "11111111 (unsigned 255)", we allow 255
+        // to show what that bit pattern means in signed interpretations
+        if (val < -128 || val > 255) {
+          input.classList.add('error');
+          this.hideAll();
+          return;
+        }
+        input.classList.remove('error');
+
+        var isUnsignedMode = (val > 127);
+        var bitPattern;
+
+        if (isUnsignedMode) {
+          // User entered 255 — show the raw bit pattern and interpret
+          bitPattern = this.toBinary(val & 0xFF, this.bits);
+        } else {
+          bitPattern = this.toTwoComplement(val, this.bits);
+        }
+
+        this.showBitDisplay(bitPattern);
+        this.showDisplayGrid(val, bitPattern, isUnsignedMode);
+        this.showDerivation(val, bitPattern, isUnsignedMode);
+        this.showComparison(bitPattern);
+      },
+
+      setPreset: function (val) {
+        document.getElementById('tc-value').value = val;
+        this.update();
+      },
+
+      clear: function () {
+        document.getElementById('tc-value').value = '';
+        document.getElementById('tc-value').classList.remove('error');
+        this.hideAll();
+      },
+
+      /* ---------- Hide all output panels ---------- */
+      hideAll: function () {
+        document.getElementById('tc-bit-display').style.display = 'none';
+        document.getElementById('tc-display-grid').style.display = 'none';
+        document.getElementById('tc-derivation').style.display = 'none';
+        document.getElementById('tc-comparison').style.display = 'none';
+      },
+
+      /* ---------- Helpers ---------- */
+      toBinary: function (val, bits) {
+        var bin = (val >>> 0).toString(2);
+        while (bin.length < bits) bin = '0' + bin;
+        return bin.substring(bits - bits);
+      },
+
+      toTwoComplement: function (val, bits) {
+        if (val >= 0) return this.toBinary(val, bits);
+        // For negative: compute 2^bits + val
+        var range = Math.pow(2, bits);
+        return this.toBinary((range + val) & (range - 1), bits);
+      },
+
+      toSignMagnitude: function (val, bits) {
+        if (val >= 0) return this.toBinary(val, bits);
+        var mag = Math.abs(val);
+        var magBin = this.toBinary(mag, bits - 1);
+        return '1' + magBin;
+      },
+
+      toOnesComplement: function (val, bits) {
+        if (val >= 0) return this.toBinary(val, bits);
+        var pos = this.toBinary(Math.abs(val), bits);
+        var flipped = '';
+        for (var i = 0; i < pos.length; i++) {
+          flipped += pos[i] === '0' ? '1' : '0';
+        }
+        return flipped;
+      },
+
+      bitPatternToDecimal: function (bin) {
+        return parseInt(bin, 2);
+      },
+
+      bitPatternToTwosComp: function (bin) {
+        var val = parseInt(bin, 2);
+        var msb = parseInt(bin[0], 2);
+        if (msb === 1) {
+          // Negative in two's complement
+          var range = Math.pow(2, this.bits);
+          return val - range;
+        }
+        return val;
+      },
+
+      bitPatternToSignMag: function (bin) {
+        var val = parseInt(bin.substring(1), 2);
+        var sign = parseInt(bin[0], 2);
+        return sign === 1 ? -val : val;
+      },
+
+      bitPatternToOnesComp: function (bin) {
+        var msb = parseInt(bin[0], 2);
+        if (msb === 0) return parseInt(bin, 2);
+        // Flip all bits to get magnitude
+        var flipped = '';
+        for (var i = 0; i < bin.length; i++) {
+          flipped += bin[i] === '0' ? '1' : '0';
+        }
+        return -parseInt(flipped, 2);
+      },
+
+      /* ---------- Render: Bit Display ---------- */
+      showBitDisplay: function (bitPattern) {
+        var container = document.getElementById('tc-bit-display');
+        var labelsRow = document.getElementById('tc-bit-labels');
+        var bitsRow = document.getElementById('tc-bit-row');
+
+        // Labels (bit positions)
+        var placeValues = [];
+        for (var i = this.bits - 1; i >= 0; i--) {
+          if (i === this.bits - 1) {
+            placeValues.push('−' + Math.pow(2, i));
+          } else {
+            placeValues.push(Math.pow(2, i).toString());
+          }
+        }
+
+        labelsRow.innerHTML = '';
+        bitsRow.innerHTML = '';
+
+        for (var j = 0; j < this.bits; j++) {
+          // Label
+          var lbl = document.createElement('span');
+          lbl.textContent = placeValues[j];
+          labelsRow.appendChild(lbl);
+
+          // Bit cell
+          var cell = document.createElement('div');
+          cell.className = 'bit-cell';
+          if (j === 0) cell.classList.add('sign-bit');
+          if (bitPattern[j] === '1') cell.classList.add('one');
+          cell.textContent = bitPattern[j];
+          bitsRow.appendChild(cell);
+        }
+
+        container.style.display = 'block';
+      },
+
+      /* ---------- Render: Display Grid ---------- */
+      showDisplayGrid: function (inputVal, bitPattern, isUnsignedMode) {
+        var grid = document.getElementById('tc-display-grid');
+
+        document.getElementById('tc-bin').textContent = this.formatBits(bitPattern);
+        document.getElementById('tc-unsigned').textContent = this.bitPatternToDecimal(bitPattern);
+        document.getElementById('tc-hex').textContent = '0x' + this.bitPatternToDecimal(bitPattern).toString(16).toUpperCase().padStart(2, '0');
+
+        if (isUnsignedMode) {
+          document.getElementById('tc-decimal').textContent = inputVal + ' (unsigned input &rarr; bit pattern)';
+        } else {
+          document.getElementById('tc-decimal').textContent = inputVal;
+        }
+
+        grid.style.display = 'grid';
+      },
+
+      formatBits: function (bin) {
+        // Insert space every 4 bits for readability
+        return bin.substring(0, 4) + ' ' + bin.substring(4);
+      },
+
+      /* ---------- Render: Derivation Panel ---------- */
+      showDerivation: function (inputVal, bitPattern, isUnsignedMode) {
+        var panel = document.getElementById('tc-derivation');
+        var title = document.getElementById('tc-deriv-title');
+        var steps = document.getElementById('tc-deriv-steps');
+        steps.innerHTML = '';
+
+        if (isUnsignedMode) {
+          title.textContent = 'Bit Pattern Interpretation (Raw: ' + this.formatBits(bitPattern) + ')';
+          var step = document.createElement('div');
+          step.className = 'derivation-step';
+          step.innerHTML = 'This bit pattern was entered as unsigned <strong>' + inputVal + '</strong>. Below you can see how each signed representation interprets these same bits.';
+          steps.appendChild(step);
+        } else if (inputVal > 0) {
+          title.textContent = 'Derivation for +' + inputVal + ' (Positive Value)';
+          var s1 = document.createElement('div');
+          s1.className = 'derivation-step';
+          s1.innerHTML = '<span class="label">Step 1:</span> Positive values are stored as straight binary.';
+          steps.appendChild(s1);
+          var s2 = document.createElement('div');
+          s2.className = 'derivation-step';
+          s2.innerHTML = '<span class="label">Result:</span> ' + inputVal + ' &rarr; <code>' + this.formatBits(bitPattern) + '</code>';
+          steps.appendChild(s2);
+          var s3 = document.createElement('div');
+          s3.className = 'derivation-step';
+          s3.innerHTML = '<span class="label">Note:</span> For positive values, all three representations (sign-magnitude, one\'s complement, two\'s complement) produce the <strong>same</strong> bit pattern.';
+          steps.appendChild(s3);
+        } else if (inputVal === 0) {
+          title.textContent = 'Derivation for 0';
+          var z1 = document.createElement('div');
+          z1.className = 'derivation-step';
+          z1.innerHTML = '<span class="label">Two\'s complement:</span> <code>' + this.formatBits(bitPattern) + '</code> &mdash; single representation of zero.';
+          steps.appendChild(z1);
+          var z2 = document.createElement('div');
+          z2.className = 'derivation-step';
+          z2.innerHTML = '<span class="label">Sign-magnitude:</span> <code>' + this.formatBits(this.toSignMagnitude(0, this.bits)) + '</code> (+0)';
+          steps.appendChild(z2);
+          var z3 = document.createElement('div');
+          z3.className = 'derivation-step';
+          z3.innerHTML = '<span class="label">One\'s complement:</span> <code>' + this.formatBits(this.toOnesComplement(0, this.bits)) + '</code> (+0)';
+          steps.appendChild(z3);
+          var z4 = document.createElement('div');
+          z4.className = 'derivation-step';
+          z4.innerHTML = '<span class="label">Key point:</span> In two\'s complement, there is only <strong>one</strong> zero. In sign-magnitude and one\'s complement, there are <strong>two</strong>: +0 (<code>00000000</code>) and &minus;0 (see &minus;0 preset below).';
+          steps.appendChild(z4);
+        } else {
+          // Negative value
+          title.textContent = 'Derivation for ' + inputVal + ' (Negative Value &mdash; Two\'s Complement Method)';
+          var pos = Math.abs(inputVal);
+          var posBin = this.toBinary(pos, this.bits);
+          var flipped = '';
+          for (var i = 0; i < posBin.length; i++) {
+            flipped += posBin[i] === '0' ? '1' : '0';
+          }
+
+          var d1 = document.createElement('div');
+          d1.className = 'derivation-step';
+          d1.innerHTML = '<span class="label">Step 1 — Start with positive |' + inputVal + '| = ' + pos + ':</span> <code>' + this.formatBits(posBin) + '</code>';
+          steps.appendChild(d1);
+
+          var d2 = document.createElement('div');
+          d2.className = 'derivation-step';
+          d2.innerHTML = '<span class="label">Step 2 — Flip every bit (one\'s complement):</span> <code>' + this.formatBits(flipped) + '</code>';
+          steps.appendChild(d2);
+
+          var d3 = document.createElement('div');
+          d3.className = 'derivation-step';
+          d3.innerHTML = '<span class="label">Step 3 — Add 1:</span> <code>' + this.formatBits(bitPattern) + '</code>';
+          steps.appendChild(d3);
+
+          var d4 = document.createElement('div');
+          d4.className = 'derivation-step';
+          d4.innerHTML = '<span class="label">Result:</span> <code>' + this.formatBits(bitPattern) + '</code> = <strong>' + inputVal + '</strong> in 8-bit two\'s complement.';
+          steps.appendChild(d4);
+
+          // Verify using negative place value
+          var placeSum = '';
+          var bitsArr = bitPattern.split('');
+          var terms = [];
+          for (var b = 0; b < this.bits; b++) {
+            if (bitsArr[b] === '1') {
+              if (b === 0) {
+                terms.push('-' + Math.pow(2, this.bits - 1));
+              } else {
+                terms.push('+' + Math.pow(2, this.bits - 1 - b));
+              }
+            }
+          }
+          var d5 = document.createElement('div');
+          d5.className = 'derivation-step';
+          d5.innerHTML = '<span class="label">Verify (negative place value):</span> ' + terms.join(' ') + ' = <strong>' + inputVal + '</strong>';
+          steps.appendChild(d5);
+        }
+
+        panel.style.display = 'block';
+      },
+
+      /* ---------- Render: Comparison Table ---------- */
+      showComparison: function (bitPattern) {
+        var panel = document.getElementById('tc-comparison');
+        var tbody = document.getElementById('tc-comparison-body');
+        tbody.innerHTML = '';
+
+        var unsignedVal = this.bitPatternToDecimal(bitPattern);
+        var twosCompVal = this.bitPatternToTwosComp(bitPattern);
+        var signMagVal = this.bitPatternToSignMag(bitPattern);
+        var onesCompVal = this.bitPatternToOnesComp(bitPattern);
+
+        var rows = [
+          {
+            name: 'Sign-Magnitude',
+            pattern: this.formatBits(this.toSignMagnitude(twosCompVal, this.bits)),
+            unsigned: this.bitPatternToDecimal(this.toSignMagnitude(twosCompVal, this.bits)),
+            note: signMagVal === 0 && twosCompVal === 0 ? '' : 'Value: ' + signMagVal,
+            isDualZero: false
+          },
+          {
+            name: 'One\'s Complement',
+            pattern: this.formatBits(this.toOnesComplement(twosCompVal, this.bits)),
+            unsigned: this.bitPatternToDecimal(this.toOnesComp(twosCompVal, this.bits)),
+            note: 'Value: ' + onesCompVal,
+            isDualZero: false
+          },
+          {
+            name: 'Two\'s Complement',
+            pattern: this.formatBits(bitPattern),
+            unsigned: unsignedVal,
+            note: 'Value: ' + twosCompVal + ' (standard)',
+            isDualZero: false
+          },
+          {
+            name: 'Unsigned',
+            pattern: this.formatBits(bitPattern),
+            unsigned: unsignedVal,
+            note: 'Value: ' + unsignedVal,
+            isDualZero: false
+          }
+        ];
+
+        // Check for dual-zero patterns
+        var isAllZeros = (bitPattern === '00000000');
+        var isAllOnes = (bitPattern === '11111111');
+        var isFirstBitOnly = (bitPattern === '10000000');
+
+        if (isAllOnes) {
+          // 11111111: sign-mag = -0, ones-comp = -0, twos-comp = -1, unsigned = 255
+          rows[0].note = 'Value: <strong>-0</strong> (dual zero!)';
+          rows[0].isDualZero = true;
+          rows[1].note = 'Value: <strong>-0</strong> (dual zero!)';
+          rows[1].isDualZero = true;
+          rows[2].note = 'Value: <strong>-1</strong> (no dual zero!)';
+        }
+        if (isFirstBitOnly) {
+          // 10000000: sign-mag = -0, ones-comp = -127, twos-comp = -128, unsigned = 128
+          rows[0].note = 'Value: <strong>-0</strong> (dual zero!)';
+          rows[0].isDualZero = true;
+        }
+
+        for (var i = 0; i < rows.length; i++) {
+          var tr = document.createElement('tr');
+          var tdName = document.createElement('td');
+          tdName.className = 'rep-name';
+          tdName.textContent = rows[i].name;
+          tr.appendChild(tdName);
+
+          var tdPattern = document.createElement('td');
+          tdPattern.textContent = rows[i].pattern;
+          if (rows[i].isDualZero) tdPattern.className = 'dual-zero';
+          tr.appendChild(tdPattern);
+
+          var tdUnsigned = document.createElement('td');
+          tdUnsigned.textContent = rows[i].unsigned;
+          tr.appendChild(tdUnsigned);
+
+          var tdNote = document.createElement('td');
+          tdNote.innerHTML = rows[i].note;
+          if (rows[i].isDualZero) tdNote.className = 'dual-zero';
+          tr.appendChild(tdNote);
+
+          tbody.appendChild(tr);
+        }
+
+        panel.style.display = 'block';
+      }
+    };
+
+    /* Expose globally for inline onclick handlers */
+    window.TCExplorer = TCExplorer;
+
+  })();
+  </script>
+  </body>
+</html>
