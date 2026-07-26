@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-spa-id="02" data-section-ids="sec-1-4,sec-widget-2,sec-1-5,sec-forward">
+<html lang="en" data-spa-id="02">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -209,30 +209,8 @@
     </nav>
   </header>
 
-  <!-- ==================== Shell (Sidebar + Main) ==================== -->
-  <div class="sp-shell">
-
-    <!-- ---------- Sidebar Navigation ---------- -->
-    <aside class="sp-sidebar">
-      <div class="sp-sidebar__title">Week 1 SPAs</div>
-      <nav aria-label="SPA Navigation">
-        <span class="sp-sidebar__spa">SPA 0 — Orientation</span>
-        <span class="sp-sidebar__spa">SPA 1 — Why Binary?</span>
-        <span class="sp-sidebar__spa sp-sidebar__spa--active">SPA 2 — Converting Between Bases</span>
-        <span class="sp-sidebar__spa">SPA 3 — Signed Integers</span>
-        <span class="sp-sidebar__spa">SPA 4 — Beyond Integers</span>
-      </nav>
-
-      <div class="sp-sidebar__divider"></div>
-
-      <div class="sp-sidebar__title">Sections</div>
-      <ul class="sp-sidebar__nav sp-sidebar__sections">
-        <!-- Populated by nav.js from data-section-ids -->
-      </ul>
-    </aside>
-
-    <!-- ---------- Main Content ---------- -->
-    <main class="sp-main">
+  <!-- ==================== Main Content (Single Column) ==================== -->
+  <main class="sp-main sp-main--full">
 
       <h1>Converting Between Bases</h1>
       <p><strong>Estimated time:</strong> ~1.5 hours &nbsp;|&nbsp; <strong>Sections:</strong> 1.4&ndash;1.5 &nbsp;|&nbsp; <strong>Prerequisite:</strong> SPA 1 (Why Binary?)</p>
@@ -444,8 +422,7 @@ Read bottom&to;top: 42 &rarr; 0x42</code></pre>
         </div>
       </section>
 
-    </main>
-  </div>
+  </main>
 
   <!-- ==================== Footer ==================== -->
   <footer class="sp-footer">
@@ -454,7 +431,6 @@ Read bottom&to;top: 42 &rarr; 0x42</code></pre>
   </footer>
 
   <!-- ==================== Scripts ==================== -->
-  <script src="shared/nav.js"></script>
   <script>
   /* ============================================================
      Widget 2: Base Conversion Practice
