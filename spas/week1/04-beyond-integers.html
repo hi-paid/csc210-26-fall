@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-spa-id="04" data-section-ids="sec-1-8,sec-1-9,sec-1-10,sec-widget-4,sec-1-11,sec-widget-1,sec-forward">
+<html lang="en" data-spa-id="04">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -389,30 +389,8 @@
     </nav>
   </header>
 
-  <!-- ==================== Shell (Sidebar + Main) ==================== -->
-  <div class="sp-shell">
-
-    <!-- ---------- Sidebar Navigation ---------- -->
-    <aside class="sp-sidebar">
-      <div class="sp-sidebar__title">Week 1 SPAs</div>
-      <nav aria-label="SPA Navigation">
-        <span class="sp-sidebar__spa">SPA 0 — Orientation</span>
-        <span class="sp-sidebar__spa">SPA 1 — Why Binary?</span>
-        <span class="sp-sidebar__spa">SPA 2 — Converting Between Bases</span>
-        <span class="sp-sidebar__spa">SPA 3 — Signed Integers</span>
-        <span class="sp-sidebar__spa sp-sidebar__spa--active">SPA 4 — Beyond Integers</span>
-      </nav>
-
-      <div class="sp-sidebar__divider"></div>
-
-      <div class="sp-sidebar__title">Sections</div>
-      <ul class="sp-sidebar__nav sp-sidebar__sections">
-        <!-- Populated by nav.js from data-section-ids -->
-      </ul>
-    </aside>
-
-    <!-- ---------- Main Content ---------- -->
-    <main class="sp-main">
+  <!-- ==================== Main Content (Single Column) ==================== -->
+  <main class="sp-main sp-main--full">
 
       <h1>Beyond Integers</h1>
       <p><strong>Estimated time:</strong> ~2.5 hours &nbsp;|&nbsp; <strong>Sections:</strong> 1.8&ndash;1.11 &nbsp;|&nbsp; <strong>Prerequisite:</strong> SPA 2 (Converting Between Bases)</p>
@@ -779,8 +757,7 @@
         </div>
       </section>
 
-    </main>
-  </div>
+  </main>
 
   <!-- ==================== Footer ==================== -->
   <footer class="sp-footer">
@@ -788,8 +765,6 @@
   </footer>
 
   <!-- ==================== Scripts ==================== -->
-  <script src="shared/nav.js"></script>
-
   <!-- Widget 4: Memory Layout Visualizer -->
   <script>
   (function () {
