@@ -5,48 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSC210 — SPA 1: Why Binary?</title>
   <link rel="stylesheet" href="shared/style.css">
-  <style>
-    /* ---------- Video + Synced Transcript (CSC210 Video Embed Standard) ----------
-       NOTE: This block is duplicated across every SPA that embeds a video
-       (00, 01, 03, 04). Recommend consolidating into shared/style.css. */
-    .video-transcript-row {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-      margin: var(--space-lg) 0;
-    }
-    @media (min-width: 1024px) {
-      .video-transcript-row { flex-direction: row; }
-      .video-col { flex: 0 0 66%; }
-      .transcript-col { flex: 0 0 33%; }
-    }
-    .video-frame {
-      width: 100%; height: 0; padding-bottom: 56.25%; position: relative;
-      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
-      background: var(--color-bg);
-    }
-    .video-frame iframe {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
-    }
-    .transcript-panel {
-      height: 24rem; max-height: 24rem; overflow-y: auto; background: var(--color-surface);
-      border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-md);
-      font-size: var(--fs-sm);
-    }
-    .transcript-loading { color: var(--color-text-muted); text-align: center; }
-    .transcript-line {
-      padding: var(--space-sm); cursor: pointer; border-radius: var(--radius);
-      margin-bottom: 2px;
-    }
-    .transcript-line:hover { background: var(--color-code-bg); }
-    .transcript-line.active-transcript-line {
-      background: var(--color-code-bg); font-weight: 600;
-      border-left: 4px solid var(--color-primary); padding-left: calc(var(--space-sm) - 4px);
-    }
-    .video-caption {
-      font-size: var(--fs-sm); color: var(--color-text-muted); margin-top: var(--space-xs);
-    }
-  </style>
 </head>
 <body>
 
@@ -232,6 +190,7 @@ Value:  4&times;16 + 2&times;1 = 64 + 2 = 66</code></pre>
         <h3>Video: Number Systems Fundamentals</h3>
         <p>This short video walks through binary, hex, and octal side by side&mdash;useful as a second pass if the tables above didn't fully click.</p>
 
+                <div class="video-breakout">
         <div class="video-transcript-row">
           <div class="video-col">
             <div class="video-frame" id="video-container">
@@ -251,6 +210,7 @@ Value:  4&times;16 + 2&times;1 = 64 + 2 = 66</code></pre>
               <p class="transcript-loading">Loading transcript...</p>
             </div>
           </div>
+        </div>
         </div>
 
         <div class="callout callout--aha">
