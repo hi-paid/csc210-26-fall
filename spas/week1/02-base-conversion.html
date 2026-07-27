@@ -197,6 +197,48 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ---------- Guided Step-by-Step Tutorial ---------- */
+    .tutorial-step {
+      display: none;
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-lg);
+      margin-top: var(--space-md);
+    }
+    .tutorial-step.active { display: block; }
+    .tutorial-step__count {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: var(--space-xs);
+    }
+    .tutorial-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: var(--space-md);
+    }
+
+    /* ---------- Practice Problems ---------- */
+    .practice-problem {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    .practice-problem__prompt { font-weight: 600; margin-bottom: var(--space-sm); }
+    .practice-problem__answer {
+      display: none;
+      font-family: var(--font-mono);
+      background: var(--color-code-bg);
+      border-radius: var(--radius);
+      padding: var(--space-sm) var(--space-md);
+      margin-top: var(--space-sm);
+    }
+    .practice-problem__answer.visible { display: block; }
   </style>
 </head>
 <body>
@@ -272,6 +314,58 @@ Read bottom&to;top: 42 &rarr; 0x42</code></pre>
       </section>
 
       <!-- ============================================================
+           Guided Step-by-Step Conversion Tutorial
+           ============================================================ -->
+      <section id="sec-guided-tutorial">
+        <h2>Guided Walkthrough: Converting 66 to Every Base</h2>
+        <p>Before trying the open-ended practice widget below, walk through one complete example step by step. Click "Next Step" to proceed at your own pace.</p>
+
+        <div id="tutorial-container">
+          <div class="tutorial-step active" data-step="1">
+            <div class="tutorial-step__count">Step 1 of 5</div>
+            <p><strong>Start:</strong> We'll convert the decimal number <strong>66</strong> into binary, hex, and octal.</p>
+          </div>
+          <div class="tutorial-step" data-step="2">
+            <div class="tutorial-step__count">Step 2 of 5</div>
+            <p><strong>Decimal &rarr; Binary</strong> (repeated division by 2):</p>
+            <pre><code>66 &divide; 2 = 33  remainder 0
+33 &divide; 2 = 16  remainder 1
+16 &divide; 2 =  8  remainder 0
+ 8 &divide; 2 =  4  remainder 0
+ 4 &divide; 2 =  2  remainder 0
+ 2 &divide; 2 =  1  remainder 0
+ 1 &divide; 2 =  0  remainder 1</code></pre>
+            <p>Read the remainders bottom to top: <code>1000010</code> &rarr; padded to a byte: <code>01000010</code></p>
+          </div>
+          <div class="tutorial-step" data-step="3">
+            <div class="tutorial-step__count">Step 3 of 5</div>
+            <p><strong>Verify: Binary &rarr; Decimal</strong> (sum of powers), to check Step 2's work:</p>
+            <pre><code>01000010 = 0&times;128 + 1&times;64 + 0&times;32 + 0&times;16 + 0&times;8 + 0&times;4 + 1&times;2 + 0&times;1
+         = 64 + 2 = 66 &check;</code></pre>
+          </div>
+          <div class="tutorial-step" data-step="4">
+            <div class="tutorial-step__count">Step 4 of 5</div>
+            <p><strong>Binary &rarr; Hex</strong> (group into 4s):</p>
+            <pre><code>01000010 &rarr; 0100 0010 &rarr; 4  2 &rarr; 0x42</code></pre>
+          </div>
+          <div class="tutorial-step" data-step="5">
+            <div class="tutorial-step__count">Step 5 of 5</div>
+            <p><strong>Decimal &rarr; Octal</strong> (repeated division by 8):</p>
+            <pre><code>66 &divide; 8 = 8  remainder 2
+ 8 &divide; 8 = 1  remainder 0
+ 1 &divide; 8 = 0  remainder 1</code></pre>
+            <p>Read bottom to top: <code>102</code> (octal)</p>
+            <p><strong>Summary:</strong> 66 (decimal) = 01000010 (binary) = 0x42 (hex) = 102 (octal). You've now seen the same value in all four bases. Try your own values in the widget below.</p>
+          </div>
+
+          <div class="tutorial-nav">
+            <button class="widget-btn widget-btn--outline" id="tutorial-prev" onclick="Tutorial.prev()" disabled>&larr; Previous</button>
+            <button class="widget-btn widget-btn--primary" id="tutorial-next" onclick="Tutorial.next()">Next Step &rarr;</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
            Widget 2 — Base Conversion Practice
            ============================================================ -->
       <section id="sec-widget-2">
@@ -337,6 +431,38 @@ Read bottom&to;top: 42 &rarr; 0x42</code></pre>
               <!-- Populated dynamically -->
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Additional Practice Problems
+           ============================================================ -->
+      <section id="sec-practice-problems">
+        <h2>Additional Practice Problems</h2>
+        <p>A few more worked problems to check your fluency. Try each one yourself before revealing the answer.</p>
+
+        <div class="practice-problem">
+          <div class="practice-problem__prompt">1. Convert 173 (decimal) to binary and hex.</div>
+          <button class="widget-btn widget-btn--outline widget-btn--small" onclick="this.nextElementSibling.classList.toggle('visible')">Show Answer</button>
+          <div class="practice-problem__answer">173 = 10101101 (binary) = 0xAD (hex)</div>
+        </div>
+
+        <div class="practice-problem">
+          <div class="practice-problem__prompt">2. Convert 0x7F (hex) to decimal and binary.</div>
+          <button class="widget-btn widget-btn--outline widget-btn--small" onclick="this.nextElementSibling.classList.toggle('visible')">Show Answer</button>
+          <div class="practice-problem__answer">0x7F = 01111111 (binary) = 127 (decimal)</div>
+        </div>
+
+        <div class="practice-problem">
+          <div class="practice-problem__prompt">3. Convert 11010110 (binary) to hex and octal.</div>
+          <button class="widget-btn widget-btn--outline widget-btn--small" onclick="this.nextElementSibling.classList.toggle('visible')">Show Answer</button>
+          <div class="practice-problem__answer">11010110 = 0xD6 (hex) = 326 (octal)</div>
+        </div>
+
+        <div class="practice-problem">
+          <div class="practice-problem__prompt">4. What is the largest value representable in 6 unsigned bits? What happens if you add 1 to it?</div>
+          <button class="widget-btn widget-btn--outline widget-btn--small" onclick="this.nextElementSibling.classList.toggle('visible')">Show Answer</button>
+          <div class="practice-problem__answer">2<sup>6</sup> &minus; 1 = 63 (111111 in binary). Adding 1 overflows/wraps to 0 (000000).</div>
         </div>
       </section>
 
@@ -715,6 +841,37 @@ Read bottom&to;top: 42 &rarr; 0x42</code></pre>
 
     window.BaseConvWidget = BaseConvWidget;
 
+  })();
+  </script>
+
+  <!-- ==================== Guided Tutorial Navigation ==================== -->
+  <script>
+  (function () {
+    'use strict';
+    var TOTAL_STEPS = 5;
+    var current = 1;
+
+    function render() {
+      document.querySelectorAll('.tutorial-step').forEach(function (step) {
+        step.classList.toggle('active', parseInt(step.dataset.step, 10) === current);
+      });
+      document.getElementById('tutorial-prev').disabled = (current === 1);
+      var nextBtn = document.getElementById('tutorial-next');
+      nextBtn.textContent = (current === TOTAL_STEPS) ? 'Restart \u2192' : 'Next Step \u2192';
+    }
+
+    var Tutorial = {
+      next: function () {
+        current = (current === TOTAL_STEPS) ? 1 : current + 1;
+        render();
+      },
+      prev: function () {
+        if (current > 1) current -= 1;
+        render();
+      }
+    };
+
+    window.Tutorial = Tutorial;
   })();
   </script>
 

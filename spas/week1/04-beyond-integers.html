@@ -377,6 +377,46 @@
         font-size: var(--fs-xs);
       }
     }
+
+    /* ---------- Video + Synced Transcript (CSC210 Video Embed Standard) ----------
+       NOTE: duplicated across 00/01/03/04 — recommend consolidating into shared/style.css. */
+    .video-transcript-row {
+      display: flex; flex-direction: column; gap: var(--space-md); margin: var(--space-lg) 0;
+    }
+    @media (min-width: 1024px) {
+      .video-transcript-row { flex-direction: row; }
+      .video-col { flex: 0 0 66%; }
+      .transcript-col { flex: 0 0 33%; }
+    }
+    .video-frame {
+      width: 100%; height: 0; padding-bottom: 56.25%; position: relative;
+      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: var(--color-bg);
+    }
+    .video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .transcript-panel {
+      height: 24rem; max-height: 24rem; overflow-y: auto; background: var(--color-surface);
+      border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-md); font-size: var(--fs-sm);
+    }
+    .transcript-loading { color: var(--color-text-muted); text-align: center; }
+    .transcript-line { padding: var(--space-sm); cursor: pointer; border-radius: var(--radius); margin-bottom: 2px; }
+    .transcript-line:hover { background: var(--color-code-bg); }
+    .transcript-line.active-transcript-line {
+      background: var(--color-code-bg); font-weight: 600;
+      border-left: 4px solid var(--color-primary); padding-left: calc(var(--space-sm) - 4px);
+    }
+    .video-caption { font-size: var(--fs-sm); color: var(--color-text-muted); margin-top: var(--space-xs); }
+
+    /* ---------- Real-World Applications ---------- */
+    .application-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); margin: var(--space-lg) 0;
+    }
+    @media (max-width: 700px) { .application-grid { grid-template-columns: 1fr; } }
+    .application-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: var(--space-md);
+    }
+    .application-card__title { font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-xs); }
+    .application-card__body { font-size: var(--fs-sm); color: var(--color-text); }
   </style>
 </head>
 <body>
@@ -641,6 +681,30 @@
       <section id="sec-1-11">
         <h2>1.11 &mdash; Synthesis: The Same Byte, Four Meanings</h2>
 
+        <h3>Video: Connecting the Concepts</h3>
+        <p>This synthesis video ties together everything from this week&mdash;number systems, two's complement, and how they enable computation&mdash;before the written synthesis below.</p>
+
+        <div class="video-transcript-row">
+          <div class="video-col">
+            <div class="video-frame" id="video-container">
+              <iframe id="youtube-player"
+                      src="https://www.youtube.com/embed/pYDKIK6zGdA?enablejsapi=1&cc_load_policy=1&iv_load_policy=3&modestbranding=1&rel=0"
+                      title="CSC210 Week 1 Synthesis: From Bits to Programs"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerpolicy="strict-origin-when-cross-origin"
+                      allowfullscreen
+                      loading="lazy">
+              </iframe>
+            </div>
+            <div class="video-caption">Closed captions available. Use the transcript panel to jump to any point in the video.</div>
+          </div>
+          <div class="transcript-col">
+            <div class="transcript-panel" id="transcript-container">
+              <p class="transcript-loading">Loading transcript...</p>
+            </div>
+          </div>
+        </div>
+
         <p>Here is the idea that holds the entire course together:</p>
 
         <div class="callout callout--aha">
@@ -664,6 +728,33 @@
         <div class="callout callout--forward">
           <div class="callout__title">Forward Reference: Von Neumann Architecture</div>
           <p>In Week 9, you will learn about the fetch-decode-execute cycle. During the "fetch" phase, the CPU reads bytes from memory and interprets them as <em>instructions</em> &mdash; not data. The exact same byte pattern that means "66" as data means "execute this operation" as an instruction. This is the Von Neumann architecture: program and data share the same memory.</p>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           Real-World Applications
+           ============================================================ -->
+      <section id="sec-real-world">
+        <h2>Real-World Applications</h2>
+        <p>The "same bits, different meanings" idea isn't abstract&mdash;it shows up constantly in real systems, including in the topics covered earlier in this SPA.</p>
+
+        <div class="application-grid">
+          <div class="application-card">
+            <div class="application-card__title">💰 Financial Software &amp; Floating-Point</div>
+            <div class="application-card__body">IEEE 754 floating-point can't represent most decimal fractions exactly (0.1 in binary is a repeating fraction). This is why financial software typically stores money as integer cents rather than floating-point dollars&mdash;directly connects to Section 1.8's "precision is limited" key insight.</div>
+          </div>
+          <div class="application-card">
+            <div class="application-card__title">🌐 Emoji &amp; Multilingual Text</div>
+            <div class="application-card__body">Every emoji, accented character, and non-Latin script you see online is a UTF-8 multi-byte sequence (Section 1.9). The same byte <code>0x41</code> is always 'A'&mdash;but a 4-byte UTF-8 sequence can represent a single emoji character.</div>
+          </div>
+          <div class="application-card">
+            <div class="application-card__title">🖼️ Image Files &amp; Color Channels</div>
+            <div class="application-card__body">A pixel's color is often stored as three bytes (R, G, B). The byte <code>01000010</code> from this SPA's core example is also a plausible green-channel value (66 out of 255)&mdash;the same bits, read as color instead of character or integer.</div>
+          </div>
+          <div class="application-card">
+            <div class="application-card__title">📊 Arrays, Structs, and Memory Bugs</div>
+            <div class="application-card__body">Section 1.10's contiguous memory layout is exactly what makes buffer overflows possible&mdash;writing past the end of an array overwrites whatever bytes come next in memory, which might be another variable entirely. Understanding layout is understanding a whole class of real security vulnerabilities.</div>
+          </div>
         </div>
       </section>
 
@@ -1100,6 +1191,633 @@
       ByteExplorer.init();
     }
 
+  })();
+  </script>
+
+  <!-- ==================== Video + Transcript Sync (CSC210 Video Embed Standard) ==================== -->
+  <script>
+  (function () {
+    'use strict';
+
+    var VIDEO_ID = 'pYDKIK6zGdA';
+    var player, timeUpdater, parsedTranscript = [];
+
+    var vttContent = `WEBVTT
+Kind: captions
+Language: en-US
+
+00:00:00.000 --> 00:00:05.760
+Aloha, so I'm here just to wrap this up for this week one learning module
+
+00:00:05.760 --> 00:00:10.960
+to talk a little bit more about synthesis and real-world applications.
+
+00:00:16.240 --> 00:00:23.180
+Okay, so how number systems enable computation. So first we've talked about data representation
+
+00:00:23.180 --> 00:00:28.340
+so far. We've only really talked about binary, hexadecimal, and two's complement. So really
+
+00:00:28.340 --> 00:00:36.240
+only talking about integers at this point. So coming next will be processing, how we
+
+00:00:36.240 --> 00:00:40.300
+manipulate binary data, and then storage and retrieval will come later.
+
+00:00:41.080 --> 00:00:45.960
+That's kind of the cycle for data, if you will, or for ones and zeros.
+
+00:00:48.860 --> 00:00:55.960
+And then the first Telia bit, I haven't really discussed it, but the same pattern of bits can
+
+00:00:55.960 --> 00:00:57.980
+represent more than one thing in a computer.
+
+00:00:58.340 --> 00:01:05.720
+Okay, for instance, it could be a signed number or an unsigned number. Signed meanings
+
+00:01:05.720 --> 00:01:13.000
+two's complement, unsigned meaning everything's a positive integer. Okay, and the same bit
+
+00:01:13.000 --> 00:01:20.860
+pattern represents two different things in those two number systems, if you will. Characters,
+
+00:01:20.860 --> 00:01:25.620
+it can represent ASCII characters, Unicode characters.
+
+00:01:25.620 --> 00:01:27.940
+Okay, colors.
+
+00:01:28.340 --> 00:01:36.700
+We'll be talking about colors. It can represent part of a network address. It can be a machine
+
+00:01:36.700 --> 00:01:43.980
+code instruction, like do this. Okay, so it can be a lot of things. And for example, decimal,
+
+00:01:44.220 --> 00:01:53.120
+the 65, decimal 65 is this bit pattern 011000011. Okay, that is decimal 65. It's also
+
+00:01:53.120 --> 00:01:57.340
+the capital, the letter A, the capital letter A.
+
+00:01:58.340 --> 00:02:05.460
+And you're dealing with characters. Okay, so your computer, your CPU needs to know, am I dealing with
+
+00:02:05.460 --> 00:02:10.340
+characters? Is this a character or is it a number? If it's a number, is it a signed number or an
+
+00:02:10.340 --> 00:02:16.540
+unsigned number? Okay, or is this a machine instruction? So all those things have to go into
+
+00:02:16.540 --> 00:02:25.740
+deciphering our bit patterns. But a single bit pattern can by itself, you don't know what it
+
+00:02:25.740 --> 00:02:28.300
+means because you need the context of what it is.
+
+00:02:28.340 --> 00:02:43.720
+Okay, so one application is colors. So we represent colors using the RGB model, which is not
+
+00:02:43.720 --> 00:02:54.420
+the same as art. Art has different model. We represent red, green, blue. That's what RGB stands
+
+00:02:54.420 --> 00:02:58.320
+for. And what we do is we have eight bits of color. And we have eight bits of color. And we have
+
+00:02:58.340 --> 00:03:04.280
+eight bits of each channel. So we have eight bits to represent how much red we have in the color of
+
+00:03:04.280 --> 00:03:10.280
+eight bits to represent how much green we have in the color and eight bits to represent how much blue
+
+00:03:10.280 --> 00:03:19.220
+we have in the color. Okay, so that's a total of 24 bits per pixel. Okay, think about your monitor,
+
+00:03:19.220 --> 00:03:26.060
+how many pixels your monitor? Well, we have 24 bits per pixel to represent every single color, or
+
+00:03:26.060 --> 00:03:28.280
+the colors that are represented by your monitor.
+
+00:03:28.340 --> 00:03:38.180
+Okay. And there's 16 points. So 24 bits means there are 16.7 million different combinations of 24 bits.
+
+00:03:38.180 --> 00:03:46.400
+So that's how many different colors we can represent. Typically, we use as a web in web, especially but a lot of
+
+00:03:46.400 --> 00:03:56.280
+other places we use hexadecimal notation to represent our colors, not numerical. Because the hexadecimal
+
+00:03:56.280 --> 00:03:58.280
+is closer to the binary.
+
+00:03:58.340 --> 00:04:01.540
+But it's not exactly the binary. Okay.
+
+00:04:01.540 --> 00:04:14.100
+So, if we look at the little graphic on the right here, we have a color BB22FF, we have a cube here that's supposed to represent
+
+00:04:14.100 --> 00:04:19.920
+how red green and blue are the three sides and how much of each gives you a different color.
+
+00:04:19.920 --> 00:04:28.180
+So BB22FF in hex would be 187 red.
+
+00:04:28.340 --> 00:04:38.860
+with a max it goes from 0 to 255 so max of CD 534 green and 255 blue so it's
+
+00:04:38.860 --> 00:04:42.500
+gonna be on the blue side because there's more blue than anything else so
+
+00:04:42.500 --> 00:04:51.780
+blue then red and a little green right and hex that's a BB 2 2 FF and in binary
+
+00:04:51.780 --> 00:04:57.300
+that's this number here I'm not gonna read it out loud but you have 24 ones
+
+00:04:57.300 --> 00:05:02.540
+and zeros or represent the same number obviously we don't want to always try to
+
+00:05:02.540 --> 00:05:08.520
+write out 24 ones and zeros so using hacks is a shortcut to writing those 24
+
+00:05:08.520 --> 00:05:16.400
+bits and that's why we use hex so much
+
+00:05:19.060 --> 00:05:24.480
+okay another application is network addressing no I should increase the
+
+00:05:24.480 --> 00:05:27.200
+size of these but
+
+00:05:27.300 --> 00:05:34.580
+so network IPV4 networks we use for oct heads or four bytes where each bite is
+
+00:05:34.580 --> 00:05:40.920
+eight bits to represent our network address on the internet okay
+
+00:05:40.920 --> 00:05:46.800
+so each section is eight bits which means eight section can represent 256
+
+00:05:46.800 --> 00:05:52.920
+different values which is two to the eighth okay give it come eight
+
+00:05:52.920 --> 00:05:57.100
+combinations of one or zero there's 256 combinations
+
+00:05:57.300 --> 00:06:04.220
+So our maximum value is 2 to the 8th minus 1, or 255, because we started 0, not 1.
+
+00:06:05.120 --> 00:06:11.860
+Okay, so 0 to 255 is our range of address for each octave.
+
+00:06:12.500 --> 00:06:19.420
+Typically, we use decimal IP addresses, like 192.168.1.254.
+
+00:06:20.580 --> 00:06:21.800
+Okay, we usually don't use hex.
+
+00:06:21.800 --> 00:06:27.380
+We could use hex, but normally we use what's called dotted decimal notation.
+
+00:06:29.280 --> 00:06:37.740
+Okay, that same address here in item 2 is how you would display that same address in binary.
+
+00:06:38.100 --> 00:06:42.160
+Now, the computer displays it in binary to itself, okay?
+
+00:06:43.640 --> 00:06:47.700
+But we don't want to try to remember all the 1s and 0s and do some kind of conversion,
+
+00:06:47.700 --> 00:06:50.800
+so we typically use dotted decimal notation.
+
+00:06:51.800 --> 00:06:58.420
+Now, the practical impact of using binary for network addressing is every network address,
+
+00:06:58.740 --> 00:07:01.960
+every internet network address, is broken into two parts.
+
+00:07:02.560 --> 00:07:11.180
+There's a network part and a host part, meaning how much of these 32-bits represent the network.
+
+00:07:11.780 --> 00:07:17.860
+Every computer on that same network will have identical first sets of bits, okay?
+
+00:07:18.700 --> 00:07:21.700
+So the network, for every, the network part of every computer,
+
+00:07:21.800 --> 00:07:23.320
+on that network, is identical.
+
+00:07:24.440 --> 00:07:26.740
+And the host part is a little different, and that's how you find it.
+
+00:07:26.980 --> 00:07:31.740
+So to route, you really, from one location to another, you really only want the network part.
+
+00:07:33.740 --> 00:07:38.160
+Okay, and you only need the host part at the end point where it's on the network,
+
+00:07:38.280 --> 00:07:45.080
+so it knows which host to, that you want to talk to, okay?
+
+00:07:45.080 --> 00:07:48.260
+So that's, when you do networking and network addressing,
+
+00:07:48.920 --> 00:07:51.060
+there's a network and a host and a network part.
+
+00:07:51.800 --> 00:07:57.140
+It just simplifies finding the right network to find the device you're trying to reach.
+
+00:07:58.440 --> 00:08:03.120
+Okay, and subnetting relies on this same bit manipulation kind of process.
+
+00:08:04.320 --> 00:08:07.720
+Security protocols depend on the binary operations as well.
+
+00:08:08.740 --> 00:08:12.800
+When I'm trying to restrict usage and stuff like that,
+
+00:08:12.920 --> 00:08:16.920
+it all goes through these IP addresses or MAC addresses if we're using those.
+
+00:08:17.240 --> 00:08:20.440
+And a MAC address is just a physical address on a wire.
+
+00:08:20.440 --> 00:08:26.400
+They're much like an IP, but it's, what is it?
+
+00:08:26.480 --> 00:08:30.620
+It's instead of four octets, it's six octets or something like that.
+
+00:08:30.960 --> 00:08:32.240
+Anyway, six or eight.
+
+00:08:34.480 --> 00:08:37.480
+Okay, but entire internet addressing system is based on this.
+
+00:08:38.580 --> 00:08:41.520
+Okay, so network addressing is important.
+
+00:08:42.420 --> 00:08:44.160
+Use ones and zeros to represent those.
+
+00:08:47.080 --> 00:08:49.560
+All right, so where we're at is,
+
+00:08:50.440 --> 00:08:53.880
+for next week, now that we know what ones and zeros are,
+
+00:08:53.940 --> 00:08:54.780
+we can do the conversions.
+
+00:08:56.040 --> 00:08:59.020
+We are going to look at more logic gate fundamentals.
+
+00:08:59.320 --> 00:09:00.080
+What's an AND gate?
+
+00:09:00.260 --> 00:09:01.080
+What's an OR gate?
+
+00:09:03.700 --> 00:09:04.820
+What's a NOT gate?
+
+00:09:07.180 --> 00:09:11.620
+And, you know, how we put those together to process bits.
+
+00:09:12.580 --> 00:09:14.760
+And then in week three, we'll start looking at
+
+00:09:14.760 --> 00:09:17.860
+how to build useful components from those gates.
+
+00:09:20.200 --> 00:09:20.400
+Okay.
+
+00:09:20.520 --> 00:09:22.260
+And eventually we'll get to the CPU architecture.
+
+00:09:23.680 --> 00:09:32.580
+Okay, so we're going to take, build from these simple ones and zeros
+
+00:09:32.580 --> 00:09:36.020
+and adding ones and zeros and learn how to add them.
+
+00:09:36.020 --> 00:09:41.820
+And we're going to build a series of behaviors that your computer can do
+
+00:09:41.820 --> 00:09:43.680
+based on having all binary stuff.
+
+00:09:45.680 --> 00:09:47.220
+Okay, so that's where we're going.
+
+00:09:47.880 --> 00:09:49.160
+Hopefully you're ready to get there.
+
+00:09:50.440 --> 00:09:56.020
+And I'm not going to even talk about this,
+
+00:09:56.120 --> 00:09:57.140
+but maybe I will.
+
+00:09:59.160 --> 00:10:01.620
+So when we finish our CPU,
+
+00:10:01.760 --> 00:10:03.860
+we're going to store numbers and registers using binary.
+
+00:10:04.120 --> 00:10:05.380
+We're going to perform arithmetic.
+
+00:10:07.120 --> 00:10:09.500
+Okay, we'll do, if we do subtraction,
+
+00:10:09.560 --> 00:10:11.000
+we use two's complement to do that.
+
+00:10:11.500 --> 00:10:14.020
+We'll make decisions like what are we going to do?
+
+00:10:14.020 --> 00:10:15.020
+And we'll execute programs.
+
+00:10:18.520 --> 00:10:20.200
+Okay, and everything you do is really,
+
+00:10:20.200 --> 00:10:21.820
+you're going to be manipulating ones and zeros.
+
+00:10:31.360 --> 00:10:33.960
+Okay, and then lastly, mastering these fundamentals is important.
+
+00:10:34.220 --> 00:10:40.080
+Okay, you should be very conversant with understanding
+
+00:10:40.080 --> 00:10:42.580
+the different number systems and how they interact.
+
+00:10:43.840 --> 00:10:47.540
+You should also, at this point, have some insight into file sizes.
+
+00:10:47.540 --> 00:10:49.960
+So like when you say, hey, I have a,
+
+00:10:49.960 --> 00:10:55.240
+you know, 64 gigabyte thumb drive.
+
+00:10:55.740 --> 00:10:57.500
+Why is it not really 64 gigabytes?
+
+00:10:58.400 --> 00:11:05.740
+And the reason is because one kilobyte is actually 101024 bytes,
+
+00:11:05.880 --> 00:11:06.940
+not 1000 bytes.
+
+00:11:07.680 --> 00:11:11.420
+Because 1024 is essentially a multiple of two.
+
+00:11:11.560 --> 00:11:13.880
+And that's how, because everything's in eights, right?
+
+00:11:14.640 --> 00:11:16.520
+Gangs of eight, a byte is eight bits.
+
+00:11:17.140 --> 00:11:17.860
+They're gangs of eight.
+
+00:11:18.200 --> 00:11:19.880
+So it has to, it never,
+
+00:11:19.960 --> 00:11:23.140
+it can be exactly a thousand because that doesn't make sense.
+
+00:11:25.460 --> 00:11:27.700
+Okay, and so that's why when you plug it in,
+
+00:11:27.700 --> 00:11:29.400
+it'll say, oh, you have some other number.
+
+00:11:29.500 --> 00:11:30.500
+It won't say 64.
+
+00:11:30.500 --> 00:11:33.500
+It'll say 62 or 65 or whatever it'll say.
+
+00:11:34.900 --> 00:11:35.400
+Okay.
+
+00:11:35.940 --> 00:11:40.340
+Whenever you use color pickers, if you're doing web design,
+
+00:11:40.700 --> 00:11:42.720
+a lot of times you'll use color pictures,
+
+00:11:43.100 --> 00:11:44.940
+pickers, I mean, pick the color,
+
+00:11:44.940 --> 00:11:48.020
+or you want to change the font in Word or PowerPoint,
+
+00:11:48.020 --> 00:11:49.040
+you use a color picker.
+
+00:11:49.040 --> 00:11:50.120
+Okay.
+
+00:11:50.120 --> 00:11:56.800
+And they use text, usually notation for those colors.
+
+00:11:57.620 --> 00:12:02.180
+And now that you know, it's three sets of eight bits for every color,
+
+00:12:02.180 --> 00:12:04.820
+you, oh, a little more red, you can up the red number.
+
+00:12:05.900 --> 00:12:06.860
+You don't have to use the picker.
+
+00:12:06.860 --> 00:12:10.080
+You can up the red number manually if you want.
+
+00:12:10.080 --> 00:12:11.880
+Network configurations, like I already mentioned,
+
+00:12:12.780 --> 00:12:18.780
+and these things are going to help you understand basically
+
+00:12:18.780 --> 00:12:21.440
+every aspect of computing, how the hardware works,
+
+00:12:21.440 --> 00:12:24.120
+how it integrates with the programming languages,
+
+00:12:24.540 --> 00:12:29.340
+how they interact with a monitor to display what they're trying to display,
+
+00:12:30.340 --> 00:12:31.100
+and all that kind of stuff.
+
+00:12:31.100 --> 00:12:35.880
+So that's why we go for it first.
+
+00:12:35.880 --> 00:12:37.860
+It's foundational and we'll build from here.
+
+00:12:42.560 --> 00:12:42.880
+All right.
+
+00:12:42.880 --> 00:12:48.480
+So you should be able to explain why computers use binary and how negative numbers work.
+
+00:12:48.780 --> 00:12:53.620
+You should understand a little bit about colors, representation.
+
+00:12:53.620 --> 00:12:58.040
+At some point, we probably won't do it today or yet,
+
+00:12:58.040 --> 00:13:00.780
+but you'll understand when you hear the term buffer overflow,
+
+00:13:00.780 --> 00:13:04.500
+you know what that'll mean and what the implications of that are.
+
+00:13:06.780 --> 00:13:10.340
+So at this point, you need to complete your assignment one,
+
+00:13:10.340 --> 00:13:14.380
+which is really the quiz and your reflection questions.
+
+00:13:14.380 --> 00:13:17.780
+And then if you have other things, post them in the discussion forum.
+
+00:13:18.780 --> 00:13:21.080
+And then next week, we'll start working on logic gates.
+
+00:13:25.580 --> 00:13:28.400
+Hopefully you've had a good week and we'll talk to you next week.
+
+`;
+
+    function timeToSeconds(timeStr) {
+      if (!timeStr) return 0;
+      var parts = timeStr.trim().split(':');
+      if (parts.length === 2) {
+        return (parseInt(parts[0]) || 0) * 60 + (parseFloat(parts[1]) || 0);
+      } else if (parts.length === 3) {
+        return (parseInt(parts[0]) || 0) * 3600 + (parseInt(parts[1]) || 0) * 60 + (parseFloat(parts[2]) || 0);
+      }
+      return 0;
+    }
+
+    function parseVtt(vttText) {
+      var cues = vttText.trim().split(/\n\n+/);
+      var parsedCues = [];
+      cues.forEach(function (cueBlock) {
+        if (cueBlock.indexOf('WEBVTT') === 0 || cueBlock.trim() === '') return;
+        var lines = cueBlock.trim().split('\n');
+        var timeLine = lines.filter(function (l) { return l.indexOf('-->') !== -1; })[0];
+        if (!timeLine) return;
+        var parts = timeLine.split(' --> ');
+        var textLines = lines.slice(lines.indexOf(timeLine) + 1);
+        parsedCues.push({
+          start: timeToSeconds(parts[0]),
+          end: timeToSeconds(parts[1]),
+          text: textLines.join(' ').trim()
+        });
+      });
+      return parsedCues;
+    }
+
+    function populateTranscript() {
+      var container = document.getElementById('transcript-container');
+      container.innerHTML = '';
+      parsedTranscript.forEach(function (cue) {
+        var lineEl = document.createElement('div');
+        lineEl.className = 'transcript-line';
+        lineEl.dataset.start = cue.start;
+        lineEl.dataset.end = cue.end;
+        lineEl.textContent = cue.text;
+        lineEl.setAttribute('role', 'button');
+        lineEl.setAttribute('tabindex', '0');
+        var seekTo = function () {
+          if (player && player.seekTo) { player.seekTo(cue.start, true); player.playVideo(); }
+        };
+        lineEl.addEventListener('click', seekTo);
+        lineEl.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); seekTo(); }
+        });
+        container.appendChild(lineEl);
+      });
+    }
+
+    function highlightCurrentLine() {
+      if (!player || !player.getCurrentTime) return;
+      var currentTime = player.getCurrentTime();
+      var lines = document.querySelectorAll('#transcript-container .transcript-line');
+      lines.forEach(function (line) {
+        var start = parseFloat(line.dataset.start);
+        var end = parseFloat(line.dataset.end);
+        if (currentTime >= start && currentTime < end) {
+          if (!line.classList.contains('active-transcript-line')) {
+            var prev = document.querySelector('#transcript-container .active-transcript-line');
+            if (prev) prev.classList.remove('active-transcript-line');
+            line.classList.add('active-transcript-line');
+            line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        } else {
+          line.classList.remove('active-transcript-line');
+        }
+      });
+    }
+
+    function syncTranscriptHeight() {
+      var videoContainer = document.getElementById('video-container');
+      var transcriptContainer = document.getElementById('transcript-container');
+      if (!videoContainer || !transcriptContainer) return;
+      if (window.matchMedia('(min-width: 1024px)').matches) {
+        transcriptContainer.style.maxHeight = videoContainer.offsetHeight + 'px';
+      } else {
+        transcriptContainer.style.maxHeight = '24rem';
+      }
+    }
+
+    window.onYouTubeIframeAPIReady = function () {
+      player = new YT.Player('youtube-player', {
+        videoId: VIDEO_ID,
+        events: {
+          onStateChange: function (event) {
+            clearInterval(timeUpdater);
+            if (event.data === YT.PlayerState.PLAYING) {
+              timeUpdater = setInterval(highlightCurrentLine, 300);
+            }
+          }
+        }
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      parsedTranscript = parseVtt(vttContent);
+      populateTranscript();
+      setTimeout(syncTranscriptHeight, 100);
+      if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+        var tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      } else {
+        window.onYouTubeIframeAPIReady();
+      }
+    });
+
+    var resizeTimeout;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(syncTranscriptHeight, 250);
+    });
   })();
   </script>
 
