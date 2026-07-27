@@ -506,3 +506,251 @@ th {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ============================================================
+   CSC210 Week 1 SPA-Specific Shared Components
+   ============================================================
+   Added during the Fall 2025 -> Fall 2026 content merge.
+   These are components used by 2+ Week 1 SPAs (00/01/02/03/04)
+   and were previously duplicated verbatim in each file's inline
+   <style> block. Consolidated here as the single source of truth.
+   ============================================================ */
+
+/* ---------- Video Breakout Wrapper ---------- */
+/* The page's prose column is intentionally narrow (--max-width: 900px) for
+   comfortable reading, but that makes an embedded video too small to read
+   on-screen text/code at the standard 66/33 video/transcript split. This
+   wrapper lets the video row expand up to 1200px (wider than the prose
+   column) while staying centered on the page. Prose elsewhere is untouched.
+   Standard "full-bleed" CSS technique: the outer band spans the viewport,
+   the inner element re-centers content within it via its own max-width. */
+.video-breakout {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* ---------- Video + Synced Transcript (CSC210 Video Embed Standard) ---------- */
+/* Used by: 00-orientation, 01-why-binary, 03-signed-integers, 04-beyond-integers */
+/* max-width is a generous backstop, not an intended limiter: source videos are
+   1080p (1920px), and at the 66/33 column split the video itself would need
+   the row to reach ~2900px before it even approached native resolution. In
+   practice Canvas's own iframe width is always the real constraint here --
+   this box should almost always render at the full width Canvas provides. */
+.video-transcript-row {
+  max-width: 1800px;
+  padding: 0 var(--space-lg);
+  margin-left: auto;
+  margin-right: auto;
+  display: flex; flex-direction: column; gap: var(--space-md); margin: var(--space-lg) 0;
+}
+@media (min-width: 1024px) {
+  .video-transcript-row { flex-direction: row; }
+  .video-col { flex: 0 0 66%; }
+  .transcript-col { flex: 0 0 33%; }
+}
+.video-frame {
+  width: 100%; height: 0; padding-bottom: 56.25%; position: relative;
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: var(--color-bg);
+}
+.video-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+.transcript-panel {
+  height: 24rem; max-height: 24rem; overflow-y: auto; background: var(--color-surface);
+  border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-md); font-size: var(--fs-sm);
+}
+.transcript-loading { color: var(--color-text-muted); text-align: center; }
+.transcript-line { padding: var(--space-sm); cursor: pointer; border-radius: var(--radius); margin-bottom: 2px; }
+.transcript-line:hover { background: var(--color-code-bg); }
+.transcript-line.active-transcript-line {
+  background: var(--color-code-bg); font-weight: 600;
+  border-left: 4px solid var(--color-primary); padding-left: calc(var(--space-sm) - 4px);
+}
+.video-caption { font-size: var(--fs-sm); color: var(--color-text-muted); margin-top: var(--space-xs); }
+
+/* ---------- Widget Card System ---------- */
+/* Used by: 02-base-conversion, 03-signed-integers, 04-beyond-integers */
+.widget-card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-primary-lt);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  margin: var(--space-xl) 0;
+  box-shadow: var(--shadow-lg);
+}
+.widget-card__title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+.widget-card__subtitle {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-md);
+}
+
+/* ---------- Widget Buttons ---------- */
+/* Used by: 02-base-conversion, 03-signed-integers, 04-beyond-integers */
+.widget-btn {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.widget-btn:active { transform: scale(.97); }
+.widget-btn--primary { background: var(--color-primary); color: #fff; }
+.widget-btn--primary:hover { background: var(--color-primary-lt); }
+.widget-btn--accent { background: var(--color-accent); color: #fff; }
+.widget-btn--accent:hover { background: var(--color-accent-hov); }
+.widget-btn--outline {
+  background: transparent;
+  color: var(--color-primary-lt);
+  border: 1px solid var(--color-primary-lt);
+}
+.widget-btn--outline:hover { background: var(--color-code-bg); }
+.widget-btn--small { font-size: var(--fs-xs); padding: var(--space-xs) var(--space-sm); }
+
+/* ---------- Widget Input Fields ---------- */
+/* Used by: 03-signed-integers, 04-beyond-integers */
+.widget-input-row {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-end;
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+.widget-input-group {
+  display: flex;
+  flex-direction: column;
+}
+.widget-input-group label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+}
+.widget-input-group input[type="number"] {
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+  width: 140px;
+  transition: border-color .15s;
+}
+.widget-input-group input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-primary-lt);
+  box-shadow: 0 0 0 2px rgba(41,128,185,.2);
+}
+.widget-input-group input[type="number"].error {
+  border-color: var(--color-danger);
+  background: #fdf0ef;
+}
+
+/* ---------- Preset Demo Buttons ---------- */
+/* Used by: 03-signed-integers, 04-beyond-integers */
+.preset-row {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-md);
+}
+.preset-btn {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.preset-btn:hover { background: var(--color-code-bg); border-color: var(--color-primary-lt); }
+
+/* ---------- Bit Display Row ---------- */
+/* Used by: 03-signed-integers, 04-beyond-integers.
+   NOTE: .bit-cell itself is intentionally sized differently per SPA
+   (03 uses 32px cells, 04 uses 40px for its "core aha" widget) and is
+   NOT consolidated here -- it remains defined locally in each file. */
+.bit-row {
+  display: flex;
+  gap: var(--space-xs);
+  margin: var(--space-sm) 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+}
+.bit-labels {
+  display: flex;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Display Boxes ---------- */
+/* Used by: 03-signed-integers, 04-beyond-integers */
+.display-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+.display-box {
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+.display-box__label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+.display-box__value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* ---------- Derivation Panel (step-by-step math display) ---------- */
+/* Used by: 03-signed-integers, 04-beyond-integers */
+.derivation-panel {
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.derivation-panel__title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-xs);
+}
+.derivation-step { margin-bottom: var(--space-xs); }
+.derivation-step .label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
