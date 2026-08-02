@@ -49,7 +49,7 @@
       <div class="callout__title">What We Have / What We Can't Do / What We Can Now Do</div>
       <p><strong>What you already know:</strong> Data is stored as patterns of 0s and 1s, where 0 means no voltage and 1 means voltage present.</p>
       <p><strong>What you can't do yet:</strong> Explain what sits between "voltage on a wire" and "the machine decided something." Right now that is a black box.</p>
-      <p><strong>What you will be able to do by the end of this page:</strong> Describe the transistor as a voltage-controlled switch, read and write truth tables for all seven logic gates, and recognize their circuit symbols on sight.</p>
+      <p><strong>What you will be able to do by the end of this page:</strong> Describe the transistor as a voltage-controlled switch, read and write truth tables for all seven logic gates with any number of inputs, and recognize their circuit symbols on sight.</p>
     </div>
 
     <p>Last week you learned that any data can be represented as 0s and 1s. You converted between binary, hexadecimal, and decimal. You saw that the same byte pattern can mean an integer, a character, or a color &mdash; depending on how the CPU interprets it.</p>
@@ -121,9 +121,11 @@
          Section 2.2 — The Basic Gates
          ============================================================ -->
     <section id="sec-2-2">
-      <h2>2.2 &mdash; The Basic Gates: AND, OR, NOT</h2>
+      <h2>2.2 &mdash; The Basic Gates</h2>
 
-      <p>Logic gates are the vocabulary of digital computation. Every complex circuit &mdash; from a simple adder to a complete CPU &mdash; is built from combinations of a small set of basic gates. We start with the three fundamental ones.</p>
+      <p>Logic gates are the vocabulary of digital computation. Every complex circuit &mdash; from a simple adder to a complete CPU &mdash; is built from combinations of a small set of basic gates. There are <strong>seven</strong> of them, and you will meet all seven on this page.</p>
+
+      <p>Start with the three most intuitive, because they map directly onto logic you already use when you write code.</p>
 
       <h3>The AND Gate</h3>
 
@@ -204,23 +206,186 @@
 
       <p>In Boolean algebra, NOT A is written <code>A'</code> or <code>&not;A</code>. This course uses the prime notation <code>A'</code> almost everywhere.</p>
 
-      <h3>Reading Circuit Symbols</h3>
+      <h3>The Inverted Gates: NAND, NOR, XNOR</h3>
 
-      <p>Each gate has a standard symbol you will see in Logisim, in textbooks, and on datasheets for the rest of your career:</p>
+      <p>Before the symbols, one piece of notation that unlocks four more gates at once.</p>
 
-      <ul>
-        <li><strong>AND</strong> &mdash; flat input side, rounded output side (a capital D).</li>
-        <li><strong>OR</strong> &mdash; curved input side, pointed output side.</li>
-        <li><strong>NOT</strong> &mdash; a triangle with a small circle at the output.</li>
-      </ul>
+      <p><strong>A small circle on a gate's output means "inverted."</strong> That is the whole convention. An AND symbol with a circle is a <strong>NAND</strong> (NOT-AND). An OR symbol with a circle is a <strong>NOR</strong> (NOT-OR). Once you know that, you can read gates you have never seen before.</p>
 
-      <p><strong>That small circle is the important part.</strong> In circuit notation, a circle at an output means "inverted." Once you know that, you can read gates you have never seen: an AND symbol with a circle is a NAND (NOT-AND), and an OR symbol with a circle is a NOR (NOT-OR). You will meet both on the next page, and the circle is how you will recognize them.</p>
+      <div class="gate-ref">
+        <svg class="gate-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NAND gate symbol: an AND shape with a small circle at the output.">
+          <path class="gate-body" d="M50,10 H100 A40,40 0 0 1 100,90 H50 Z"/>
+          <circle class="gate-body" cx="150" cy="50" r="10"/>
+          <line class="wire wire--lo" x1="0" y1="30" x2="50" y2="30"/>
+          <line class="wire wire--lo" x1="0" y1="70" x2="50" y2="70"/>
+          <line class="wire wire--lo" x1="160" y1="50" x2="200" y2="50"/>
+          <text x="10" y="24">A</text><text x="10" y="64">B</text>
+        </svg>
+        <table>
+          <thead><tr><th>A</th><th>B</th><th>A NAND B</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>1</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-      <p><strong>Why start with these three?</strong> AND, OR, and NOT are the most intuitive gates for humans, because they map directly onto everyday logic and onto code you have already written. But they are not the most efficient to manufacture. That turns out to matter enormously, and it is where the next page begins.</p>
+      <p>Every output is the exact opposite of the AND table. NAND outputs 0 <em>only</em> when both inputs are 1.</p>
+
+      <div class="gate-ref">
+        <svg class="gate-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NOR gate symbol: an OR shape with a small circle at the output.">
+          <path class="gate-body" d="M25,10 Q70,50 25,90 H50 Q120,50 50,10 Z"/>
+          <circle class="gate-body" cx="115" cy="50" r="10"/>
+          <line class="wire wire--lo" x1="0" y1="30" x2="38" y2="30"/>
+          <line class="wire wire--lo" x1="0" y1="70" x2="38" y2="70"/>
+          <line class="wire wire--lo" x1="125" y1="50" x2="200" y2="50"/>
+          <text x="6" y="24">A</text><text x="6" y="64">B</text>
+        </svg>
+        <table>
+          <thead><tr><th>A</th><th>B</th><th>A NOR B</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>1</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>NOR outputs 1 <em>only</em> when both inputs are 0. Again, the exact opposite of OR.</p>
+
+      <h3>The Exclusive Gates: XOR and XNOR</h3>
+
+      <p><strong>XOR</strong> (exclusive OR) outputs 1 when the inputs are <em>different</em>. Its symbol is an OR symbol with a second curved line across the inputs.</p>
+
+      <div class="gate-ref">
+        <svg class="gate-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XOR gate symbol: an OR shape with an extra curved line across the inputs.">
+          <path class="gate-body" d="M35,10 Q80,50 35,90 H60 Q130,50 60,10 Z"/>
+          <path class="gate-body" d="M22,10 Q67,50 22,90" fill="none"/>
+          <line class="wire wire--lo" x1="0" y1="30" x2="34" y2="30"/>
+          <line class="wire wire--lo" x1="0" y1="70" x2="34" y2="70"/>
+          <line class="wire wire--lo" x1="115" y1="50" x2="200" y2="50"/>
+          <text x="4" y="24">A</text><text x="4" y="64">B</text>
+        </svg>
+        <table>
+          <thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Compare this with OR. They differ in exactly one row: when both inputs are 1, OR says 1 but XOR says 0. Plain OR means "at least one"; XOR means "one but not both." In Boolean algebra XOR is written <code>A &oplus; B</code>.</p>
+
+      <p><strong>XNOR</strong> is XOR with a bubble &mdash; outputs 1 when the inputs are the <em>same</em>. It is the equality detector: feed it two bits and it tells you whether they match. You will use exactly this in Week 3 to build a comparator.</p>
+
+      <div class="gate-ref">
+        <svg class="gate-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XNOR gate symbol: an XOR shape with a small circle at the output.">
+          <path class="gate-body" d="M35,10 Q80,50 35,90 H60 Q130,50 60,10 Z"/>
+          <path class="gate-body" d="M22,10 Q67,50 22,90" fill="none"/>
+          <circle class="gate-body" cx="125" cy="50" r="10"/>
+          <line class="wire wire--lo" x1="0" y1="30" x2="34" y2="30"/>
+          <line class="wire wire--lo" x1="0" y1="70" x2="34" y2="70"/>
+          <line class="wire wire--lo" x1="135" y1="50" x2="200" y2="50"/>
+          <text x="4" y="24">A</text><text x="4" y="64">B</text>
+        </svg>
+        <table>
+          <thead><tr><th>A</th><th>B</th><th>A XNOR B</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>1</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>All Seven at a Glance</h3>
+
+      <p>That is the complete set. Every circuit in this course &mdash; up to and including the CPU &mdash; is built from these seven.</p>
+
+      <table>
+        <thead><tr><th>Gate</th><th>Symbol cue</th><th>Outputs 1 when&hellip;</th><th>Written</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AND</strong></td><td>flat back, round nose</td><td>both inputs are 1</td><td><code>AB</code></td></tr>
+          <tr><td><strong>OR</strong></td><td>curved back, pointed nose</td><td>at least one input is 1</td><td><code>A + B</code></td></tr>
+          <tr><td><strong>NOT</strong></td><td>triangle + bubble</td><td>the input is 0</td><td><code>A'</code></td></tr>
+          <tr><td><strong>NAND</strong></td><td>AND + bubble</td><td>not both inputs are 1</td><td><code>(AB)'</code></td></tr>
+          <tr><td><strong>NOR</strong></td><td>OR + bubble</td><td>both inputs are 0</td><td><code>(A + B)'</code></td></tr>
+          <tr><td><strong>XOR</strong></td><td>OR + extra curve</td><td>the inputs differ</td><td><code>A &oplus; B</code></td></tr>
+          <tr><td><strong>XNOR</strong></td><td>XOR + bubble</td><td>the inputs match</td><td><code>(A &oplus; B)'</code></td></tr>
+        </tbody>
+      </table>
+
+      <p>Notice that four of the seven are just another gate with a bubble. If you can remember AND, OR, NOT, and XOR, and you remember that a bubble inverts, you have all seven.</p>
 
       <div class="callout">
         <div class="callout__title">CS301 coverage</div>
-        <p>AND, OR, and NOT gates, their truth tables, and their circuit symbols are covered in Saylor CS301 <strong>Unit 3: Fundamentals of Digital Logic Design</strong>. Log into your <a href="https://learn.saylor.org/mod/page/view.php?id=20643" target="_blank" rel="noopener">CS301 course page</a> and navigate to Unit 3. This page adds the course-specific framing and the connection back to Week 1's binary concepts.</p>
+        <p>All seven gates, their truth tables, and their circuit symbols are covered in Saylor CS301 <strong>Unit 3: Fundamentals of Digital Logic Design</strong>. Log into your <a href="https://learn.saylor.org/mod/page/view.php?id=20643" target="_blank" rel="noopener">CS301 course page</a> and navigate to Unit 3. This page adds the course-specific framing and the connection back to Week 1's binary concepts.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Section 2.2.1 — Gates With More Than Two Inputs
+         ============================================================ -->
+    <section id="sec-2-2-1">
+      <h2>2.2.1 &mdash; Gates with More Than Two Inputs</h2>
+
+      <p>Every truth table so far has had two inputs. Real gates are not limited to two, and neither is Logisim &mdash; when you place a gate you can set its input count to 3, 4, 5 or more. So what does a three-input AND gate do?</p>
+
+      <p>For most gates the answer is exactly what you would guess.</p>
+
+      <table>
+        <thead><tr><th>Gate</th><th>With any number of inputs, outputs 1 when&hellip;</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AND</strong></td><td>every input is 1</td></tr>
+          <tr><td><strong>OR</strong></td><td>at least one input is 1</td></tr>
+          <tr><td><strong>NAND</strong></td><td>at least one input is 0 &nbsp;<span style="color:var(--color-text-muted);">(i.e. NOT all-ones)</span></td></tr>
+          <tr><td><strong>NOR</strong></td><td>every input is 0</td></tr>
+          <tr><td><strong>NOT</strong></td><td colspan="1">&mdash; NOT always has exactly one input; there is nothing to generalize</td></tr>
+        </tbody>
+      </table>
+
+      <p>Nothing surprising. A three-input AND needs all three high; a five-input OR needs only one.</p>
+
+      <div class="callout callout--aha">
+        <div class="callout__title">XOR and XNOR are the odd ones — literally</div>
+        <p>With two inputs you can describe XOR as "the inputs are different," or equivalently "exactly one input is 1." Both descriptions give the right answer, so it is easy to assume they mean the same thing.</p>
+        <p><strong>They do not.</strong> With three or more inputs the "exactly one" description breaks, and the correct rule is:</p>
+        <p style="font-size:var(--fs-md);padding-left:var(--space-lg);">
+          <strong>XOR outputs 1 when the sum of all its inputs is <em>odd</em>, and 0 when the sum is <em>even</em>.</strong>
+        </p>
+        <p>XNOR is the mirror image: 1 when the sum is <strong>even</strong>, 0 when it is odd.</p>
+        <p>Check it against the two-input table above and you will see the two-input case was the parity rule all along: 0+1 = 1 (odd, output 1); 1+1 = 2 (even, output 0).</p>
+      </div>
+
+      <h3>Where the "exactly one" idea falls apart</h3>
+
+      <p>Take a three-input XOR with all three inputs set to 1:</p>
+
+      <ul>
+        <li>"Exactly one input is 1" &rarr; false, so this rule would predict <strong>0</strong>.</li>
+        <li>"The sum is odd" &rarr; 1 + 1 + 1 = 3, which is odd, so the parity rule predicts <strong>1</strong>.</li>
+      </ul>
+
+      <p>The gate outputs <strong>1</strong>. The parity rule is right; the "exactly one" shortcut is wrong. Set the simulator below to XOR with three inputs and confirm it yourself.</p>
+
+      <p>This property has a name: XOR computes the <strong>parity</strong> of its inputs. It is genuinely useful &mdash; parity is the basis of the simplest error-detection schemes in memory and data transmission, where an extra bit is set to make the total number of 1s always odd (or always even) so a single flipped bit can be detected.</p>
+
+      <div class="callout callout--forward">
+        <div class="callout__title">Forward reference</div>
+        <p>In <strong>Week 3</strong> you will build a <strong>full adder</strong>, which adds three bits: two operands plus a carry-in. Its sum output is a three-input XOR &mdash; and now you know why. Adding three bits, the sum bit is 1 exactly when an odd number of them are 1. The parity rule is not a curiosity; it is how binary addition works.</p>
+      </div>
+
+      <div class="callout">
+        <div class="callout__title">One thing to watch in Logisim</div>
+        <p>A three-input NAND is <strong>not</strong> the same as chaining two two-input NANDs. A three-input NAND computes <code>(ABC)'</code> &mdash; the AND of all three, inverted once at the end. Chaining gives you <code>((AB)'C)'</code>, which is a different function.</p>
+        <p>When a circuit needs a three-input gate, set the gate's input count in its properties panel rather than wiring two gates together. The same caution applies to NOR.</p>
       </div>
     </section>
 
@@ -232,6 +397,7 @@
         <div class="widget-card__title">Interactive: Gate Simulator</div>
         <div class="widget-card__subtitle">
           Pick a gate, then click the input switches to toggle them between 0 and 1. Watch the wires change color as signal flows, and watch the highlighted row move through the truth table.
+          Switch to <strong>3 inputs</strong> to check the parity rule for XOR and XNOR.
         </div>
 
         <div class="gate-selector" role="group" aria-label="Select a logic gate">
@@ -244,11 +410,18 @@
           <button type="button" class="gate-btn" data-gate="XNOR">XNOR</button>
         </div>
 
+        <div class="gate-selector" role="group" aria-label="Number of inputs" style="margin-bottom:var(--space-lg);">
+          <span style="align-self:center;font-size:var(--fs-sm);color:var(--color-text-muted);margin-right:var(--space-xs);">Inputs:</span>
+          <button type="button" class="gate-btn active" data-inputs="2">2</button>
+          <button type="button" class="gate-btn" data-inputs="3">3</button>
+        </div>
+
         <div class="gate-sim">
           <div>
             <div class="gate-sim__col-title">Inputs</div>
             <button type="button" class="input-switch" id="switch-a">A: 0</button>
             <button type="button" class="input-switch" id="switch-b">B: 0</button>
+            <button type="button" class="input-switch" id="switch-c">C: 0</button>
           </div>
 
           <div class="gate-sim__display">
@@ -292,6 +465,8 @@
                   aria-controls="panel-recognition" id="tab-recognition">Gate Recognition</button>
           <button type="button" class="tab-button" role="tab" aria-selected="false"
                   aria-controls="panel-truthtable" id="tab-truthtable">Truth Tables</button>
+          <button type="button" class="tab-button" role="tab" aria-selected="false"
+                  aria-controls="panel-multi" id="tab-multi">Multi-Input Gates</button>
         </div>
 
         <div class="tab-panel active" id="panel-recognition" role="tabpanel" aria-labelledby="tab-recognition">
@@ -309,14 +484,25 @@
         </div>
 
         <div class="tab-panel" id="panel-truthtable" role="tabpanel" aria-labelledby="tab-truthtable">
-          <p class="quiz-question">For a two-input <strong>XOR</strong> gate, how many of the four input combinations produce an output of 1?</p>
+          <p class="quiz-question">A <strong>three-input XOR</strong> gate has all three inputs set to 1. What is the output?</p>
           <div class="quiz-options" data-quiz="q2">
-            <button type="button" class="quiz-option" data-correct="false">One</button>
-            <button type="button" class="quiz-option" data-correct="true">Two</button>
-            <button type="button" class="quiz-option" data-correct="false">Three</button>
-            <button type="button" class="quiz-option" data-correct="false">Four</button>
+            <button type="button" class="quiz-option" data-correct="true">1</button>
+            <button type="button" class="quiz-option" data-correct="false">0</button>
+            <button type="button" class="quiz-option" data-correct="false">Undefined &mdash; XOR only takes two inputs</button>
           </div>
           <div class="quiz-feedback" id="feedback-q2" role="status" aria-live="polite"></div>
+          <p style="font-size:var(--fs-sm);color:var(--color-text-muted);margin-top:var(--space-md);">
+            Set the simulator to XOR, switch it to 3 inputs, and turn all three on.
+          </p>
+        </div>
+
+        <div class="tab-panel" id="panel-multi" role="tabpanel" aria-labelledby="tab-multi">
+          <p class="quiz-question">A <strong>three-input NAND</strong> gate has inputs A=1, B=0, C=1. What is the output?</p>
+          <div class="quiz-options" data-quiz="q3">
+            <button type="button" class="quiz-option" data-correct="true">1</button>
+            <button type="button" class="quiz-option" data-correct="false">0</button>
+          </div>
+          <div class="quiz-feedback" id="feedback-q3" role="status" aria-live="polite"></div>
         </div>
       </div>
     </section>
@@ -329,8 +515,9 @@
 
       <div class="callout callout--forward">
         <div class="callout__title">Forward reference</div>
-        <p>AND, OR, and NOT are the gates that match how humans think. They are not the gates that chip factories preferred to build. On the next page you will meet a single gate that can be wired together to produce all three of these &mdash; and therefore any circuit whatsoever, including a complete CPU.</p>
-        <p>That gate is the NAND gate, and the fact that one gate type is sufficient for all of computing is the most important idea in this week and arguably in this course.</p>
+        <p>You now have all seven gates. That should raise a question: do we actually <em>need</em> seven?</p>
+        <p>AND, OR, and NOT are the gates that match how humans think, and the other four are conveniences built from them. But chip factories did not want seven kinds of gate, or even three. On the next page you will find out that <strong>one</strong> of these seven &mdash; the NAND gate &mdash; can be wired together to produce every one of the others, and therefore any circuit whatsoever, including a complete CPU.</p>
+        <p>That one gate type is sufficient for all of computing is the most important idea in this week, and arguably in this course.</p>
       </div>
 
       <div style="text-align:center;margin:var(--space-xl) 0;">
@@ -397,7 +584,21 @@
            '<line class="wire js-wire-out" x1="135" y1="50" x2="196" y2="50"/>'
     };
 
-    var state = { gate: 'AND', a: 0, b: 0 };
+    /* A third input needs a third wire stub. Rather than maintain a parallel
+       set of 3-input symbols, we insert one into the existing symbol and
+       nudge the two-input stubs apart — the gate body is tall enough. */
+    function symbolFor(gate, n) {
+      var s = SYMBOLS[gate];
+      if (n < 3 || L.maxInputs(gate) === 1) return s;
+      var isRound = (gate === 'OR' || gate === 'NOR' || gate === 'XOR' || gate === 'XNOR');
+      var xEnd = isRound ? (gate === 'XOR' || gate === 'XNOR' ? 34 : 38) : 50;
+      return s.replace(/y1="30" x2="(\d+)" y2="30"/, 'y1="22" x2="$1" y2="22"')
+              .replace(/y1="70" x2="(\d+)" y2="70"/, 'y1="78" x2="$1" y2="78"') +
+             '<line class="wire js-wire-c" x1="0" y1="50" x2="' + xEnd + '" y2="50"/>' +
+             '<text x="' + (isRound ? 4 : 10) + '" y="46">C</text>';
+    }
+
+    var state = { gate: 'AND', n: 2, a: 0, b: 0, c: 0 };
 
     var el = {
       slot:     document.getElementById('gate-svg-slot'),
@@ -405,6 +606,7 @@
       rule:     document.getElementById('gate-rule'),
       switchA:  document.getElementById('switch-a'),
       switchB:  document.getElementById('switch-b'),
+      switchC:  document.getElementById('switch-c'),
       output:   document.getElementById('gate-output'),
       status:   document.getElementById('gate-status'),
       ttHead:   document.getElementById('tt-head'),
@@ -412,27 +614,28 @@
       ttName:   document.getElementById('tt-gate-name')
     };
 
-    function arity() { return L.gates[state.gate].arity; }
+    /* Effective input count: NOT is always 1, everything else follows the toggle. */
+    function arity() { return L.maxInputs(state.gate) === 1 ? 1 : state.n; }
 
-    function currentOutput() {
-      var g = L.gates[state.gate];
-      return g.arity === 1 ? g.fn(state.a) : g.fn(state.a, state.b);
+    function bits() {
+      var n = arity();
+      return n === 1 ? [state.a] : (n === 2 ? [state.a, state.b] : [state.a, state.b, state.c]);
     }
 
     function renderSymbol() {
       el.slot.innerHTML =
         '<svg class="gate-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" ' +
-        'role="img" aria-label="' + state.gate + ' gate diagram. Signal state is also given in the output field.">' +
-        SYMBOLS[state.gate] + '</svg>';
+        'role="img" aria-label="' + state.gate + ' gate diagram with ' + arity() +
+        ' input' + (arity() === 1 ? '' : 's') + '. Signal state is also given in the output field.">' +
+        symbolFor(state.gate, arity()) + '</svg>';
     }
 
     function renderTable() {
       var n = arity();
-      var rows = L.gateTable(state.gate);
+      var rows = L.gateTable(state.gate, n);
+      var heads = ['A', 'B', 'C'].slice(0, n);
 
-      el.ttHead.innerHTML = n === 1
-        ? '<tr><th>A</th><th>Y</th></tr>'
-        : '<tr><th>A</th><th>B</th><th>Y</th></tr>';
+      el.ttHead.innerHTML = '<tr>' + heads.map(function (h) { return '<th>' + h + '</th>'; }).join('') + '<th>Y</th></tr>';
 
       el.ttBody.innerHTML = rows.map(function (r) {
         var out = r[r.length - 1];
@@ -445,74 +648,92 @@
 
     function paint() {
       var g = L.gates[state.gate];
-      var n = g.arity;
-      var out = currentOutput();
+      var n = arity();
+      var ins = bits();
+      var out = L.gateEval(state.gate, ins);
 
-      el.name.textContent = g.label + ' Gate';
-      el.rule.textContent = g.rule;
-      el.ttName.textContent = g.label;
+      el.name.textContent = g.label + ' Gate' + (n > 2 ? ' (' + n + ' inputs)' : '');
+      el.rule.textContent = L.gateRule(state.gate, n);
+      el.ttName.textContent = g.label + (n > 2 ? ' (' + n + '-input)' : '');
 
-      // Input switches
-      el.switchA.textContent = 'A: ' + state.a;
-      el.switchA.classList.toggle('on', !!state.a);
-      el.switchA.setAttribute('aria-pressed', String(!!state.a));
-      el.switchA.setAttribute('aria-label', 'Input A, currently ' + state.a + '. Click to toggle.');
+      var switches = [
+        { el: el.switchA, key: 'a', label: 'A' },
+        { el: el.switchB, key: 'b', label: 'B' },
+        { el: el.switchC, key: 'c', label: 'C' }
+      ];
+      switches.forEach(function (s, i) {
+        var shown = i < n;
+        s.el.style.display = shown ? '' : 'none';
+        if (!shown) return;
+        s.el.textContent = s.label + ': ' + state[s.key];
+        s.el.classList.toggle('on', !!state[s.key]);
+        s.el.setAttribute('aria-pressed', String(!!state[s.key]));
+        s.el.setAttribute('aria-label', 'Input ' + s.label + ', currently ' + state[s.key] + '. Click to toggle.');
+      });
 
-      el.switchB.style.display = (n === 1) ? 'none' : '';
-      if (n === 2) {
-        el.switchB.textContent = 'B: ' + state.b;
-        el.switchB.classList.toggle('on', !!state.b);
-        el.switchB.setAttribute('aria-pressed', String(!!state.b));
-        el.switchB.setAttribute('aria-label', 'Input B, currently ' + state.b + '. Click to toggle.');
-      }
-
-      // Output lamp
       el.output.textContent = 'Y: ' + out;
       el.output.classList.toggle('on', !!out);
 
-      // Wire colouring
       var svg = el.slot.querySelector('svg');
       if (svg) {
         var setWire = function (sel, hi) {
-          var w = svg.querySelector(sel);
-          if (!w) return;
-          w.classList.toggle('wire--hi', !!hi);
-          w.classList.toggle('wire--lo', !hi);
+          Array.prototype.forEach.call(svg.querySelectorAll(sel), function (w) {
+            w.classList.toggle('wire--hi', !!hi);
+            w.classList.toggle('wire--lo', !hi);
+          });
         };
         setWire('.js-wire-a', state.a);
         setWire('.js-wire-b', state.b);
+        setWire('.js-wire-c', state.c);
         setWire('.js-wire-out', out);
       }
 
-      // Active truth-table row
-      var key = (n === 1) ? String(state.a) : String(state.a) + String(state.b);
+      var key = ins.join('');
       Array.prototype.forEach.call(el.ttBody.querySelectorAll('tr'), function (tr) {
         tr.classList.toggle('tt__row--active', tr.dataset.key === key);
       });
 
-      // Screen-reader announcement
-      el.status.textContent = n === 1
-        ? state.gate + ' gate. Input A is ' + state.a + '. Output is ' + out + '.'
-        : state.gate + ' gate. Input A is ' + state.a + ', input B is ' + state.b + '. Output is ' + out + '.';
+      var names = ['A', 'B', 'C'].slice(0, n);
+      var spoken = names.map(function (nm, i) { return 'input ' + nm + ' is ' + ins[i]; }).join(', ');
+      var parity = (state.gate === 'XOR' || state.gate === 'XNOR')
+        ? ' Sum of inputs is ' + ins.reduce(function (x, y) { return x + y; }, 0) + '.'
+        : '';
+      el.status.textContent = state.gate + ' gate with ' + n + ' input' + (n === 1 ? '' : 's') +
+                              '. ' + spoken.charAt(0).toUpperCase() + spoken.slice(1) +
+                              '.' + parity + ' Output is ' + out + '.';
     }
+
+    function refresh() { renderSymbol(); renderTable(); paint(); }
 
     function selectGate(name) {
       state.gate = name;
-      Array.prototype.forEach.call(document.querySelectorAll('.gate-btn'), function (b) {
+      Array.prototype.forEach.call(document.querySelectorAll('[data-gate]'), function (b) {
         var on = b.dataset.gate === name;
         b.classList.toggle('active', on);
         b.setAttribute('aria-pressed', String(on));
       });
-      renderSymbol();
-      renderTable();
-      paint();
+      refresh();
     }
 
-    Array.prototype.forEach.call(document.querySelectorAll('.gate-btn'), function (b) {
+    function selectInputCount(n) {
+      state.n = n;
+      Array.prototype.forEach.call(document.querySelectorAll('[data-inputs]'), function (b) {
+        var on = +b.dataset.inputs === n;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+      refresh();
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-gate]'), function (b) {
       b.addEventListener('click', function () { selectGate(b.dataset.gate); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-inputs]'), function (b) {
+      b.addEventListener('click', function () { selectInputCount(+b.dataset.inputs); });
     });
     el.switchA.addEventListener('click', function () { state.a = state.a ? 0 : 1; paint(); });
     el.switchB.addEventListener('click', function () { state.b = state.b ? 0 : 1; paint(); });
+    el.switchC.addEventListener('click', function () { state.c = state.c ? 0 : 1; paint(); });
 
     selectGate('AND');
   })();
@@ -546,8 +767,12 @@
         no:  'Not quite. Work it backwards: you want output 1 when A and B are both 0. OR outputs 0 in exactly that case, so you want the inverse of OR — which is NOR.'
       },
       q2: {
-        yes: 'Correct. XOR outputs 1 for 01 and 10, and 0 for 00 and 11 — two of the four rows.',
-        no:  'Check the simulator. XOR outputs 1 when the inputs differ, which happens in exactly two of the four combinations: 01 and 10.'
+        yes: 'Correct. 1 + 1 + 1 = 3, which is odd, so the output is 1. This is exactly where the "exactly one input is 1" shortcut fails — it would have predicted 0.',
+        no:  'Use the parity rule, not the "exactly one" shortcut. The sum of the inputs is 1 + 1 + 1 = 3. Three is odd, so XOR outputs 1.'
+      },
+      q3: {
+        yes: 'Correct. A three-input NAND is NOT(A·B·C). Here A·B·C = 1·0·1 = 0, and NOT 0 = 1.',
+        no:  'Work the AND first: 1 · 0 · 1 = 0, because not every input is 1. Then invert once: NOT 0 = 1. A NAND only outputs 0 when every input is 1.'
       }
     };
 

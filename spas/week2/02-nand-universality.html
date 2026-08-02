@@ -82,7 +82,7 @@
 
     <div class="callout callout--hook">
       <div class="callout__title">What We Have / What We Can't Do / What We Can Now Do</div>
-      <p><strong>What you already know:</strong> Seven gates, their truth tables, and their symbols. You know that a circle on an output means "inverted."</p>
+      <p><strong>What you already know:</strong> All seven gates, their truth tables with two or more inputs, and their symbols. You know that a circle on an output means "inverted."</p>
       <p><strong>What you can't do yet:</strong> Explain why a chip factory would want to build only <em>one</em> kind of gate &mdash; or how that could possibly be enough.</p>
       <p><strong>What you will be able to do by the end of this page:</strong> Derive AND, OR, and NOT using nothing but NAND gates, and explain why that single fact underwrites every circuit you will build for the rest of this course.</p>
     </div>
@@ -95,21 +95,23 @@
     <section id="sec-2-3">
       <h2>2.3 &mdash; NAND and NOR: The Universal Gates</h2>
 
-      <h3>The NAND Gate</h3>
+      <h3>A Reminder, Then the Point</h3>
 
-      <p>The NAND gate (NOT-AND) is an AND gate followed by a NOT gate. It outputs 0 only when all inputs are 1; otherwise it outputs 1. Its symbol is an AND symbol with a bubble on the output &mdash; exactly as the bubble convention from the last page would predict.</p>
+      <p>You met NAND and NOR on the last page. As a refresher:</p>
 
-      <table style="max-width:320px;">
-        <thead><tr><th>A</th><th>B</th><th>A NAND B</th></tr></thead>
+      <table style="max-width:420px;">
+        <thead><tr><th>A</th><th>B</th><th>A NAND B</th><th>A NOR B</th></tr></thead>
         <tbody>
-          <tr><td>0</td><td>0</td><td>1</td></tr>
-          <tr><td>0</td><td>1</td><td>1</td></tr>
-          <tr><td>1</td><td>0</td><td>1</td></tr>
-          <tr><td>1</td><td>1</td><td>0</td></tr>
+          <tr><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td>0</td><td>0</td></tr>
         </tbody>
       </table>
 
-      <p>So far this looks like just another gate. It isn't.</p>
+      <p>NAND outputs 0 only when all inputs are 1. NOR outputs 1 only when all inputs are 0. Nothing new so far &mdash; they are AND and OR with a bubble.</p>
+
+      <p><strong>This page is not about what these gates do. It is about a property they have that the other five do not.</strong></p>
 
       <div class="callout callout--aha">
         <div class="callout__title">The critical insight</div>
@@ -169,21 +171,11 @@
 
       <p>This is not a historical curiosity. The <strong>Intel 4004</strong>, the first commercial microprocessor, shipped in 1971 built largely from NAND logic. The Apple I used chips built the same way. The CPU in the machine you are reading this on uses a mix of gate types for efficiency &mdash; but it <em>could</em> have been built from NAND alone, and nothing would have changed about what it can compute.</p>
 
-      <h3>The NOR Gate Is Also Universal</h3>
+      <h3>NOR Is Also Universal</h3>
 
-      <p>NAND is not special in this respect. The NOR gate (NOT-OR) outputs 1 only when all inputs are 0, and it is universal for the same reasons.</p>
+      <p>NAND is not special in this respect. NOR &mdash; whose table you saw at the top of this page &mdash; is universal for exactly the same reasons, and the derivations work the same way with the roles of AND and OR swapped.</p>
 
-      <table style="max-width:320px;">
-        <thead><tr><th>A</th><th>B</th><th>A NOR B</th></tr></thead>
-        <tbody>
-          <tr><td>0</td><td>0</td><td>1</td></tr>
-          <tr><td>0</td><td>1</td><td>0</td></tr>
-          <tr><td>1</td><td>0</td><td>0</td></tr>
-          <tr><td>1</td><td>1</td><td>0</td></tr>
-        </tbody>
-      </table>
-
-      <p>Deriving AND, OR, and NOT from NOR is a good exercise and you will do one case of it in Assignment 2.</p>
+      <p>Deriving AND, OR, and NOT from NOR is a good exercise, and you will do one case of it in Assignment 2.</p>
 
       <div class="callout">
         <div class="callout__title">Why this course emphasizes NAND over NOR</div>
